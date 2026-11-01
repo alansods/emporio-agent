@@ -19,7 +19,7 @@ Work is spec-driven with [OpenSpec](https://github.com/Fission-AI/OpenSpec):
 
 ```bash
 pnpm lint && pnpm typecheck && pnpm test
-uv run ruff check . && uv run ruff format --check . && uv run pytest
+source .venv/bin/activate && ruff check . && ruff format --check . && pytest
 ```
 
 ## Conventions

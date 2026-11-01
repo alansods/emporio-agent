@@ -12,7 +12,7 @@ also proves the Vercel-friendly layout (Next.js at the root, Python function in 
 - Design tokens (`styles/tokens.css`) and global styles: dark only, `color-scheme: dark`, Sora + Inter via `next/font`.
 - A minimal home page: app shell with the "Empório da Música" brand, a small guitar SVG glyph and an empty chat area.
 - FastAPI app at `api/index.py` exporting `app`, with `GET /api/health`.
-- Python toolchain: Python 3.12 via `uv`, `requirements.txt` (runtime), `requirements-dev.txt` (pytest, ruff, httpx),
+- Python toolchain: Python 3.12 via `uv`, `requirements.txt` (runtime), `requirements-dev.txt` (pytest, ruff, httpx2),
   `pyproject.toml` for ruff and pytest settings.
 - Local dev: `next.config` rewrite of `/api/*` to `http://127.0.0.1:8000` in development only.
 - GitHub Actions workflow: lint + type-check + tests for web and api on every push and pull request.
@@ -21,7 +21,7 @@ also proves the Vercel-friendly layout (Next.js at the root, Python function in 
 
 New dependencies (all standard for the chosen stack, see `openspec/project.md`): `next`, `react`, `react-dom`,
 `typescript`, `eslint` + `eslint-config-next`, `prettier`, `vitest`, `@testing-library/react`,
-`@testing-library/jest-dom`, `jsdom`, `@vitejs/plugin-react`; `fastapi`; dev: `pytest`, `ruff`, `httpx` (needed by
+`@testing-library/jest-dom`, `jsdom`, `@vitejs/plugin-react`; `fastapi`; dev: `pytest`, `ruff`, `httpx2` (needed by
 FastAPI's `TestClient`). TanStack Query, Zod and `google-genai` are added later by the changes that use them.
 
 Out of scope:

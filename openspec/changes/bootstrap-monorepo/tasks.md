@@ -7,9 +7,9 @@
 
 ## 2. Python API skeleton (`feat(api): add health endpoint`)
 
-- [ ] 2.1 Add `requirements.txt` (fastapi), `requirements-dev.txt` (pytest, ruff, httpx) and `pyproject.toml` (ruff, pytest config); verify `uv venv --python 3.12 && uv pip install -r requirements.txt -r requirements-dev.txt` succeeds
-- [ ] 2.2 Write `tests/test_health.py` from the `chat-api` scenarios (200 + `{"status": "ok"}`, works without API key, unknown path returns JSON 404 without traceback); verify it fails
-- [ ] 2.3 Implement `api/index.py` exporting `app` with `GET /api/health` and the JSON HTTP error handler; verify `uv run pytest` and `uv run ruff check . && uv run ruff format --check .` pass
+- [x] 2.1 Add `requirements.txt` (fastapi), `requirements-dev.txt` (pytest, ruff, httpx2) and `pyproject.toml` (ruff, pytest config); verify `uv venv --python 3.12 && uv pip install -r requirements.txt -r requirements-dev.txt` succeeds
+- [x] 2.2 Write `tests/test_health.py` from the `chat-api` scenarios (200 + `{"status": "ok"}`, works without API key, unknown path returns JSON 404 without traceback); verify it fails
+- [x] 2.3 Implement `api/index.py` exporting `app` with `GET /api/health` and the JSON HTTP error handler; verify `pytest` and `ruff check . && ruff format --check .` pass in the activated venv
 
 ## 3. Next.js skeleton (`chore(web): scaffold next.js app with strict typescript`)
 
