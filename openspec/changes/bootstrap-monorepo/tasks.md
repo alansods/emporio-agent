@@ -20,10 +20,10 @@
 
 ## 4. Dark app shell (`feat(web): add dark design tokens and app shell`)
 
-- [ ] 4.1 Write `__tests__/tokens.test.ts`: parses `styles/tokens.css`, asserts `color-scheme: dark` and WCAG AA contrast for the text pairs listed in design.md; verify it fails
-- [ ] 4.2 Write `__tests__/home.test.tsx` from the `chat-ui` scenarios (banner with brand name, `aria-hidden` glyph, main landmark with `aria-live="polite"`, no theme toggle) and a test that `globals.css` contains the reduced-motion rule; verify they fail
-- [ ] 4.3 Add `styles/tokens.css` and `styles/globals.css` (dark only, focus ring, reduced motion), load Sora and Inter with `next/font`; verify the token test passes
-- [ ] 4.4 Implement `app/layout.tsx`, `app/page.tsx`, `components/Header` (CSS Module, guitar SVG glyph) and an empty chat area; verify the home tests pass and the page has no horizontal scroll at 360 px in browser devtools
+- [x] 4.1 Write `__tests__/tokens.test.ts`: parses `styles/tokens.css`, asserts `color-scheme: dark` and WCAG AA contrast for the text pairs listed in design.md; verify it fails
+- [x] 4.2 Write `__tests__/home.test.tsx` from the `chat-ui` scenarios (banner with brand name, `aria-hidden` glyph, main landmark with `aria-live="polite"`, no theme toggle) and a test that `globals.css` contains the reduced-motion rule; verify they fail
+- [x] 4.3 Add `styles/tokens.css` and `styles/globals.css` (dark only, focus ring, reduced motion), load Sora and Inter with `next/font`; verify the token test passes
+- [x] 4.4 Implement `app/layout.tsx`, `app/page.tsx`, `components/Header` (CSS Module, guitar SVG glyph) and an empty chat area; verify the home tests pass and the page has no horizontal scroll at 360 px in browser devtools
 
 ## 5. CI and docs (`ci: run lint and tests for web and api`, `docs: add setup instructions`)
 

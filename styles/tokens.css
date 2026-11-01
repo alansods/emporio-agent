@@ -1,0 +1,48 @@
+:root {
+  color-scheme: dark;
+
+  /* Surfaces */
+  --bg: #070c1a;
+  --surface: #0e1630;
+  --surface-2: #14204a;
+  --surface-sunken: #0b1228;
+  --border: #24335f;
+
+  /* Text */
+  --text: #e9edf8;
+  --text-muted: #9aa6c6;
+
+  /* Accents */
+  --blue: #3d7bff;
+  --blue-text: #7aa4ff;
+  --pink: #ff1f6d;
+  --on-pink: #070c1a;
+  /* Darker pink for filled areas with white text: #ff1f6d with white fails WCAG AA (3.7:1). */
+  --pink-strong: #d6125a;
+  --on-pink-strong: #ffffff;
+  --pink-soft: #3a1030;
+
+  /* Status */
+  --success: #3ddc97;
+  --warning: #ffb547;
+  --danger: #ff6b6b;
+
+  /* Shape */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+
+  /* Type */
+  --font-body: var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-sora), var(--font-inter), system-ui, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --focus-ring: 2px solid var(--blue);
+}
