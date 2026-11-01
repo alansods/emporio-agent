@@ -13,10 +13,10 @@
 
 ## 3. Next.js skeleton (`chore(web): scaffold next.js app with strict typescript`)
 
-- [ ] 3.1 Scaffold Next.js App Router at the repo root with pnpm, TypeScript strict, no Tailwind, `packageManager` pinned; verify `pnpm build` succeeds
-- [ ] 3.2 Configure ESLint + Prettier and scripts `dev`, `build`, `lint`, `format`, `typecheck`, `test`; verify `pnpm lint && pnpm typecheck` pass
-- [ ] 3.3 Configure Vitest (jsdom, React Testing Library, jest-dom) with one smoke test; verify `pnpm test` passes
-- [ ] 3.4 Add the dev-only `/api/:path*` rewrite to `http://127.0.0.1:8000` in `next.config.ts`; verify `curl localhost:3000/api/health` returns `{"status":"ok"}` with both servers running
+- [x] 3.1 Scaffold Next.js App Router at the repo root with pnpm, TypeScript strict, no Tailwind, `packageManager` pinned; verify `pnpm build` succeeds
+- [x] 3.2 Configure ESLint + Prettier and scripts `dev`, `build`, `lint`, `format`, `typecheck`, `test`; verify `pnpm lint && pnpm typecheck` pass
+- [x] 3.3 Configure Vitest (jsdom, React Testing Library, jest-dom) with one smoke test; verify `pnpm test` passes
+- [x] 3.4 Add the dev-only `/api/:path*` rewrite to `http://127.0.0.1:8000` in `next.config.ts`; verify `curl localhost:3000/api/health` returns `{"status":"ok"}` with both servers running
 
 ## 4. Dark app shell (`feat(web): add dark design tokens and app shell`)
 
