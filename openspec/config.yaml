@@ -1,0 +1,18 @@
+schema: spec-driven
+
+context: |
+  Long-lived project context, business rules and assumptions live in openspec/project.md. Read it before planning.
+  Write every artifact in English. Product data, policy text and the pt-BR dictionary stay in Portuguese.
+  Keep solutions as simple as they can be while still correct; this is a hiring case judged on clarity.
+  Business rules that must never regress: the LLM never does arithmetic; PIX 5% never applies on promotional
+  prices; only active promotions count and the highest wins; order lookup requires a matching full name or email.
+
+rules:
+  proposal:
+    - State what is out of scope.
+    - Justify any new dependency.
+  specs:
+    - Use requirements with "#### Scenario:" blocks in WHEN/THEN form.
+  tasks:
+    - List test tasks derived from the scenarios before the implementation tasks they cover.
+    - Group tasks so each group can become one small conventional commit.

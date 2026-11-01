@@ -1,0 +1,40 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+build/
+dist/
+next-env.d.ts
+*.tsbuildinfo
+coverage/
+playwright-report/
+test-results/
+
+# Vercel
+.vercel/
+
+# Local agent history from the CLI prototype
+.history.json
+
+# OS and editors
+.DS_Store
+.idea/
+.vscode/
+*.log
+
+# Case brief and raw source materials (kept local)
+docs/
