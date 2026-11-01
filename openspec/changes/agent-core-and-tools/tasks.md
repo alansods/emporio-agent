@@ -17,8 +17,8 @@
 
 ## 3. Catalog search tool (`feat(agent): add product search tool`)
 
-- [ ] 3.1 Write `tests/test_catalog.py` from every `product-catalog` scenario (combined filters, no filters total 65, exact model, accents, every word must match, accent-insensitive category, unknown category error, promotion within budget, sort order, cap 8 with total 35, four availability values, only available); verify it fails
-- [ ] 3.2 Implement `emporio_agent/catalog.py` with the result shape in design D5; verify `pytest tests/test_catalog.py` passes
+- [x] 3.1 Write `tests/test_catalog.py` from every `product-catalog` scenario (combined filters, no filters total 65, exact model, accents, every word must match, accent-insensitive category, unknown category error, promotion within budget, sort order, cap 8 with total 35, four availability values, only available); verify it fails
+- [x] 3.2 Implement `emporio_agent/catalog.py` with the result shape in design D5; verify `pytest tests/test_catalog.py` passes
 
 ## 4. Order lookup tool (`feat(agent): add order lookup tool`)
 
