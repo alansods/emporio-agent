@@ -34,10 +34,10 @@
 
 ## 6. System prompt and agent loop (`feat(agent): add system prompt and agent loop`)
 
-- [ ] 6.1 Write `tests/test_prompt.py` from the `support-agent` prompt scenarios (full manual text, phone, email, ISO reference date, English vs Brazilian Portuguese instruction); verify it fails
-- [ ] 6.2 Implement `emporio_agent/prompt.py` (design D10); verify `pytest tests/test_prompt.py` passes
-- [ ] 6.3 Add `tests/fakes.py` with a `ScriptedModel` that returns prepared `types.Content` responses and records each request; write `tests/test_agent.py` from the remaining `support-agent` scenarios (history order, independent turns, one tool round with result in second request and the first response passed back unchanged, two calls in one response, tool call record, no tools, invalid arguments, unknown tool, round limit with 6 model calls and localized fallback, provider error without manual text or key, default and overridden model); verify it fails
-- [ ] 6.4 Implement `emporio_agent/agent.py` (design D8, D9); verify `pytest`, `ruff check .` and `ruff format --check .` pass with `GEMINI_API_KEY` unset
+- [x] 6.1 Write `tests/test_prompt.py` from the `support-agent` prompt scenarios (full manual text, phone, email, ISO reference date, English vs Brazilian Portuguese instruction); verify it fails
+- [x] 6.2 Implement `emporio_agent/prompt.py` (design D10); verify `pytest tests/test_prompt.py` passes
+- [x] 6.3 Add `tests/fakes.py` with a `ScriptedModel` that returns prepared `types.Content` responses and records each request; write `tests/test_agent.py` from the remaining `support-agent` scenarios (history order, independent turns, one tool round with result in second request and the first response passed back unchanged, two calls in one response, tool call record, no tools, invalid arguments, unknown tool, round limit with 6 model calls and localized fallback, provider error without manual text or key, default and overridden model); verify it fails
+- [x] 6.4 Implement `emporio_agent/agent.py` (design D8, D9); verify `pytest`, `ruff check .` and `ruff format --check .` pass with `GEMINI_API_KEY` unset
 - [ ] 6.5 With a real key in the environment, run one turn from a Python shell asking for the Takamine GD20 price; verify the record shows a `search_products` call and the reply quotes 2199 and 2089.05 (manual check, not in CI)
 
 ## 7. Integration check

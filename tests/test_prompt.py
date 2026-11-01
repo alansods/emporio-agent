@@ -1,0 +1,41 @@
+from datetime import date
+
+from emporio_agent.config import DATA_DIR
+from emporio_agent.prompt import build_system_prompt
+
+REFERENCE_DATE = date(2026, 3, 23)
+
+
+def test_prompt_carries_the_full_policy_manual():
+    manual = (DATA_DIR / "politicas.txt").read_text(encoding="utf-8")
+
+    assert manual in build_system_prompt("pt-BR", REFERENCE_DATE)
+
+
+def test_prompt_carries_contact_and_reference_date():
+    prompt = build_system_prompt("pt-BR", REFERENCE_DATE)
+
+    assert "(67) 3341-4444" in prompt
+    assert "contato@emporiodamusica.com.br" in prompt
+    assert "2026-03-23" in prompt
+
+
+def test_prompt_names_both_tools():
+    prompt = build_system_prompt("pt-BR", REFERENCE_DATE)
+
+    assert "search_products" in prompt
+    assert "get_order_status" in prompt
+
+
+def test_english_locale_asks_for_english_replies():
+    prompt = build_system_prompt("en", REFERENCE_DATE)
+
+    assert "reply in English" in prompt
+    assert "português do Brasil" not in prompt
+
+
+def test_portuguese_locale_asks_for_brazilian_portuguese_replies():
+    prompt = build_system_prompt("pt-BR", REFERENCE_DATE)
+
+    assert "português do Brasil" in prompt
+    assert "reply in English" not in prompt
