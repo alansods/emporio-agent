@@ -9,11 +9,11 @@
 
 ## 2. Data loading and pricing (`feat(agent): add data loading and pricing rules`)
 
-- [ ] 2.1 Create the `emporio_agent/` package with `config.py` (env with defaults: `REFERENCE_DATE` 2026-03-23, `MODEL` `gemini-3.8-flash`, constants) and `text.py`; write `tests/test_config.py` for the default and overridden reference date and model; verify it fails, then passes after implementing
-- [ ] 2.2 Write `tests/test_data.py`: loader returns 65 products, 9 categories, 25 promotions, 20 orders, 22 order items, 50 customers with typed fields (`Decimal` prices, `date` dates, `None` for empty optional fields), and importing the package reads no file; verify it fails
-- [ ] 2.3 Implement `emporio_agent/data.py` (design D2); verify `tests/test_data.py` passes
-- [ ] 2.4 Write `tests/test_pricing.py` from every `pricing` scenario (inactive ignored, active applied, highest of several, rounding to 323.10, PIX 2089.05, no PIX on promotion, installments for 2199.00, 429.90, 323.10, 150.00, 90.00); verify it fails
-- [ ] 2.5 Implement `emporio_agent/pricing.py` (design D3, D4); verify `pytest tests/test_pricing.py` and `ruff check .` pass
+- [x] 2.1 Create the `emporio_agent/` package with `config.py` (env with defaults: `REFERENCE_DATE` 2026-03-23, `MODEL` `gemini-3.8-flash`, constants) and `text.py`; write `tests/test_config.py` for the default and overridden reference date and model; verify it fails, then passes after implementing
+- [x] 2.2 Write `tests/test_data.py`: loader returns 65 products, 9 categories, 25 promotions, 20 orders, 22 order items, 50 customers with typed fields (`Decimal` prices, `date` dates, `None` for empty optional fields), and importing the package reads no file; verify it fails
+- [x] 2.3 Implement `emporio_agent/data.py` (design D2); verify `tests/test_data.py` passes
+- [x] 2.4 Write `tests/test_pricing.py` from every `pricing` scenario (inactive ignored, active applied, highest of several, rounding to 323.10, PIX 2089.05, no PIX on promotion, installments for 2199.00, 429.90, 323.10, 150.00, 90.00); verify it fails
+- [x] 2.5 Implement `emporio_agent/pricing.py` (design D3, D4); verify `pytest tests/test_pricing.py` and `ruff check .` pass
 
 ## 3. Catalog search tool (`feat(agent): add product search tool`)
 
