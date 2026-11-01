@@ -28,9 +28,9 @@
 
 ## 5. Tool declarations and dispatch (`feat(agent): add tool declarations and dispatch`)
 
-- [ ] 5.1 Add `google-genai` to `requirements.txt`, pinned to the latest release; check the current SDK docs for `FunctionDeclaration`, `Tool`, `GenerateContentConfig` and disabling automatic function calling; verify `uv pip install -r requirements.txt` succeeds
-- [ ] 5.2 Write `tests/test_tools.py`: declarations name exactly `search_products` and `get_order_status`, category enum equals the 9 category names, `get_order_status` requires both arguments; `run_tool` returns `invalid_arguments` for an unknown argument and `unknown_tool` for `delete_order` without raising; verify it fails
-- [ ] 5.3 Implement `emporio_agent/tools.py`; verify `pytest tests/test_tools.py` passes
+- [x] 5.1 Add `google-genai` to `requirements.txt`, pinned to the latest release; check the current SDK docs for `FunctionDeclaration`, `Tool`, `GenerateContentConfig` and disabling automatic function calling; verify `uv pip install -r requirements.txt` succeeds
+- [x] 5.2 Write `tests/test_tools.py`: declarations name exactly `search_products` and `get_order_status`, category enum equals the 9 category names, `get_order_status` requires both arguments; `run_tool` returns `invalid_arguments` for an unknown argument and `unknown_tool` for `delete_order` without raising; verify it fails
+- [x] 5.3 Implement `emporio_agent/tools.py`; verify `pytest tests/test_tools.py` passes
 
 ## 6. System prompt and agent loop (`feat(agent): add system prompt and agent loop`)
 
