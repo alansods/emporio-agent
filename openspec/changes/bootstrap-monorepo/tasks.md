@@ -27,8 +27,8 @@
 
 ## 5. CI and docs (`ci: run lint and tests for web and api`, `docs: add setup instructions`)
 
-- [ ] 5.1 Add `.github/workflows/ci.yml` with `web` and `api` jobs; verify both jobs pass on GitHub after push
-- [ ] 5.2 Replace the placeholder README with title, one-line summary and local setup, run and test commands; verify each command runs as written on a clean clone
+- [x] 5.1 Add `.github/workflows/ci.yml` with `web` and `api` jobs; verify both jobs pass on GitHub after push
+- [x] 5.2 Replace the placeholder README with title, one-line summary and local setup, run and test commands; verify each command runs as written on a clean clone
 
 ## Workflow follow-up
 
