@@ -64,7 +64,11 @@ are emitted as numbers with two decimals (`float(decimal)`), which is exact enou
 ### D4. Installments as a data table
 
 ```python
-INSTALLMENT_MINIMUMS = ((range(2, 4), Decimal("50")), (range(4, 7), Decimal("80")), (range(7, 13), Decimal("100")))
+INSTALLMENT_MINIMUMS = (
+    (range(2, 4), Decimal("50")),
+    (range(4, 7), Decimal("80")),
+    (range(7, 13), Decimal("100")),
+)
 ```
 
 `max_installments(price)` returns the largest `n` whose installment `price / n` meets its band's minimum, else 1.
@@ -89,8 +93,12 @@ The prototype returned `dias_desde_entrega_aprox` and left the comparison to the
 ### D6. Return windows as a data table
 
 ```python
-RETURN_WINDOWS = (("regret", "delivery", 7), ("preference_exchange", "delivery", 7),
-                  ("defect_exchange", "purchase", 30), ("legal_warranty", "delivery", 90))
+RETURN_WINDOWS = (
+    ("regret", "delivery", 7),
+    ("preference_exchange", "delivery", 7),
+    ("defect_exchange", "purchase", 30),
+    ("legal_warranty", "delivery", 90),
+)
 ```
 
 Base dates per manual: 4.1 regret "após o recebimento", 4.2 defect "após a compra", 8.1 warranty "a partir da data
@@ -107,7 +115,9 @@ the name or email.
 
 ```python
 class ChatModel(Protocol):
-    def generate(self, system: str, contents: list[types.Content], tools: list[types.Tool]) -> types.Content: ...
+    def generate(
+        self, system: str, contents: list[types.Content], tools: list[types.Tool]
+    ) -> types.Content: ...
 ```
 
 `GeminiModel` wraps `genai.Client(api_key=...)` and calls `client.models.generate_content(model=MODEL,
