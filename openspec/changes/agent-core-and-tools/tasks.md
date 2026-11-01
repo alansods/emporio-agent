@@ -2,10 +2,10 @@
 
 ## 1. Source data and policy text (`feat(data): add store data and policy text`)
 
-- [ ] 1.1 Copy the six CSVs from `docs/data/` to `data/` with short names (`products.csv`, `categories.csv`, `promotions.csv`, `orders.csv`, `order_items.csv`, `customers.csv`) and the PDF as `data/politicas_da_loja.pdf`; verify `cmp` reports each copy identical to its original
-- [ ] 1.2 Add `pypdf` to `requirements-dev.txt`, pinned to the latest release; verify `uv pip install -r requirements-dev.txt` succeeds
-- [ ] 1.3 Write `tests/test_policies_text.py`: `data/politicas.txt` exists, contains section titles 1 to 10, has no "Página N" footer lines and no zero-width characters; verify it fails
-- [ ] 1.4 Implement `scripts/extract_policies.py` (design D11) and generate `data/politicas.txt`; verify the test passes and a diff against the prototype's `politicas.txt` shows only header, footer and whitespace cleanup
+- [x] 1.1 Copy the six CSVs from `docs/data/` to `data/` with short names (`products.csv`, `categories.csv`, `promotions.csv`, `orders.csv`, `order_items.csv`, `customers.csv`) and the PDF as `data/politicas_da_loja.pdf`; verify `cmp` reports each copy identical to its original
+- [x] 1.2 Add `pypdf` to `requirements-dev.txt`, pinned to the latest release; verify `uv pip install -r requirements-dev.txt` succeeds
+- [x] 1.3 Write `tests/test_policies_text.py`: `data/politicas.txt` exists, contains section titles 1 to 10, has no "Página N" footer lines and no zero-width characters; verify it fails
+- [x] 1.4 Implement `scripts/extract_policies.py` (design D11) and generate `data/politicas.txt`; verify the test passes and a diff against the prototype's `politicas.txt` shows only header, footer and whitespace cleanup
 
 ## 2. Data loading and pricing (`feat(agent): add data loading and pricing rules`)
 
