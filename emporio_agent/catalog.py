@@ -6,7 +6,7 @@ from typing import Any
 
 from emporio_agent.config import SEARCH_RESULT_LIMIT
 from emporio_agent.data import Product, Promotion, Store, load_store
-from emporio_agent.pricing import Pricing, price_product
+from emporio_agent.pricing import Pricing, as_number, price_product
 from emporio_agent.text import normalize
 
 ACTIVE_STATUS = "active"
@@ -19,11 +19,6 @@ OUT_OF_STOCK = "out_of_stock"
 class PricedProduct:
     product: Product
     pricing: Pricing
-
-
-def as_number(value: Decimal) -> int | float:
-    """JSON number for the model: integers stay integers, money keeps its cents."""
-    return int(value) if value == value.to_integral_value() else float(value)
 
 
 def availability(product: Product) -> str:

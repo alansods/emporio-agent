@@ -38,6 +38,11 @@ class Pricing:
         return self.pix_price is not None
 
 
+def as_number(value: Decimal) -> int | float:
+    """JSON number for the model: integers stay integers, money keeps its cents."""
+    return int(value) if value == value.to_integral_value() else float(value)
+
+
 def to_cents(value: Decimal) -> Decimal:
     return value.quantize(CENT, rounding=ROUND_HALF_UP)
 

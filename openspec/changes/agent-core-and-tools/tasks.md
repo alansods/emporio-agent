@@ -22,9 +22,9 @@
 
 ## 4. Order lookup tool (`feat(agent): add order lookup tool`)
 
-- [ ] 4.1 Write `tests/test_orders.py` from every `order-lookup` scenario (name and email match ignoring case and accents, partial and other-customer names rejected, unknown id equals mismatch, shipped order 8, cancelled order 17, two items in order 15, order 7 windows at 2026-03-23 and 2026-02-24, no windows for shipped, default and overridden reference date); verify it fails
-- [ ] 4.2 Implement `emporio_agent/orders.py` (design D5, D6, D7); verify `pytest tests/test_orders.py` passes
-- [ ] 4.3 Update `openspec/project.md`: return windows with their base dates (defect exchange from purchase), preference exchange assumption, package path `emporio_agent/` in the layout; verify `git grep "api/emporio_agent"` returns nothing in tracked files
+- [x] 4.1 Write `tests/test_orders.py` from every `order-lookup` scenario (name and email match ignoring case and accents, partial and other-customer names rejected, unknown id equals mismatch, shipped order 8, cancelled order 17, two items in order 15, order 7 windows at 2026-03-23 and 2026-02-24, no windows for shipped, default and overridden reference date); verify it fails
+- [x] 4.2 Implement `emporio_agent/orders.py` (design D5, D6, D7); verify `pytest tests/test_orders.py` passes
+- [x] 4.3 Update `openspec/project.md`: return windows with their base dates (defect exchange from purchase), preference exchange assumption, package path `emporio_agent/` in the layout; verify `git grep "api/emporio_agent"` returns nothing in tracked files
 
 ## 5. Tool declarations and dispatch (`feat(agent): add tool declarations and dispatch`)
 

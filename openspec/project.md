@@ -51,13 +51,13 @@ components/    chat, cards, trace panel, language toggle
 lib/           API client, Zod schemas, i18n, formatters
 locales/       en.json, pt-BR.json
 styles/        tokens.css, globals.css
-api/index.py   FastAPI app (exports `app`)
-api/emporio_agent/  data loading, tools, pricing, prompt, agent loop, cards builder
-data/          CSVs + politicas.txt
+api/index.py   FastAPI app (exports `app`), the only Python file under api/
+emporio_agent/ data loading, pricing, tools, prompt, agent loop, cards builder
+data/          CSVs, politicas_da_loja.pdf, politicas.txt (generated)
 examples/      recorded conversations
 tests/         pytest
 __tests__/     vitest
-scripts/       record_examples.py
+scripts/       extract_policies.py, record_examples.py
 ```
 
 ## Conventions
@@ -86,7 +86,8 @@ Data and tools:
     price, active promotion, PIX price, max interest-free installments, stock and availability
     (`available`, `out_of_stock`, `discontinued`, `coming_soon`).
   - `get_order_status(order_id, name_or_email)`: order status, items, tracking and dates. Reveals data only when the
-    given full name or email matches the order owner (privacy, LGPD).
+    given full name or email matches the order owner (privacy, LGPD). An unknown order id and a non-matching
+    identity return the same error, so order ids cannot be probed.
 - Tool names and result keys are internal. Labels shown in the UI (trace panel, cards) come from the i18n
   dictionaries. Category values stay in Portuguese because they are data.
 - Product search is accent-insensitive. Category is an enum of the 9 categories in `categories.csv`.
@@ -103,7 +104,8 @@ Pricing (all computed in Python, never by the LLM):
 Policies:
 
 - The full policy manual (`data/politicas.txt`, about 14 KB) goes in the system prompt. No retrieval.
-- Return windows from the delivery date: 7 days regret, 30 days defect swap, 90 days legal warranty.
+- Return windows, computed in Python as deadlines: 7 days regret (4.1) and 7 days preference exchange (4.3)
+  from receipt, 30 days defect exchange from purchase (4.2), 90 days legal warranty from receipt (8.1).
 - Contact info used by the agent: (67) 3341-4444 and `contato@emporiodamusica.com.br`.
 
 Scope:
@@ -117,6 +119,7 @@ Scope:
 1. Reference date: the data is a March 2026 snapshot (last order 2026-03-22). "Today" is `REFERENCE_DATE`,
    default 2026-03-23, configurable by env var.
 2. Delivery date: the data has no actual receipt date. `estimated_delivery` approximates it for return deadlines.
+   The manual does not say where the 7-day preference exchange starts; it is counted from receipt, like regret.
 3. Phone number: the manual lists (67) 3341-4444 (company data) and (67) 3321-4500 (WhatsApp section). The agent
    uses the first one. The manual also spells the email with and without an accent; the agent uses the ASCII form.
 4. Multiple active promotions on one product: the highest discount wins.
