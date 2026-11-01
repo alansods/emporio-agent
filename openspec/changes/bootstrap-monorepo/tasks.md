@@ -2,8 +2,8 @@
 
 ## 1. Repo hygiene (`chore: add repo hygiene files`)
 
-- [ ] 1.1 Add `LICENSE` (MIT), `.editorconfig`, `.nvmrc` (22), `.env.example` (`GEMINI_API_KEY`, `MODEL`, `REFERENCE_DATE` with comments) and a short `CONTRIBUTING.md`; verify `git status` lists only these files
-- [ ] 1.2 Verify `.gitignore` covers env files, build output, `.vercel/` and `docs/`; verify `git status --ignored` shows local-only files as ignored, not untracked
+- [x] 1.1 Add `LICENSE` (MIT), `.editorconfig`, `.nvmrc` (22), `.env.example` (`GEMINI_API_KEY`, `MODEL`, `REFERENCE_DATE` with comments) and a short `CONTRIBUTING.md`; verify `git status` lists only these files
+- [x] 1.2 Verify `.gitignore` covers env files, build output, `.vercel/` and `docs/`; verify `git status --ignored` shows local-only files as ignored, not untracked
 
 ## 2. Python API skeleton (`feat(api): add health endpoint`)
 
