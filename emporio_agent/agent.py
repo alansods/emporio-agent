@@ -7,7 +7,7 @@ from typing import Any, Literal, Protocol
 from google import genai
 from google.genai import types
 
-from emporio_agent.config import MAX_TOOL_ROUNDS, model_name, reference_date
+from emporio_agent.config import MAX_TOOL_ROUNDS, MODEL_TIMEOUT_MS, model_name, reference_date
 from emporio_agent.prompt import STORE_PHONE, Locale, build_system_prompt
 from emporio_agent.tools import build_tools, run_tool
 
@@ -67,6 +67,7 @@ class GeminiModel:
                 system_instruction=system,
                 tools=tools,
                 automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True),
+                http_options=types.HttpOptions(timeout=MODEL_TIMEOUT_MS),
             ),
         )
         if not response.candidates or not response.candidates[0].content:

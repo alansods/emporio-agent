@@ -5,10 +5,17 @@ from fastapi.testclient import TestClient
 
 from api.index import app, chat_model, chat_rate_limiter
 from emporio_agent import agent
+from emporio_agent.agent import ChatModel, GeminiModel
 from emporio_agent.config import CHAT_RATE_LIMIT, CHAT_RATE_WINDOW_SECONDS
 from emporio_agent.prompt import load_policies
 from emporio_agent.rate_limit import RateLimiter
-from tests.fakes import FakeClock, ScriptedModel, call_response, text_response
+from tests.fakes import (
+    FakeClock,
+    FakeGeminiClient,
+    ScriptedModel,
+    call_response,
+    text_response,
+)
 
 FAKE_KEY = "AIza-fake-secret-key"
 INVALID_REQUEST = {"error": "invalid_request"}
@@ -26,7 +33,7 @@ def chat_body(*messages: dict[str, str], locale: str = "pt-BR") -> dict[str, obj
     return {"messages": list(messages), "locale": locale}
 
 
-def use_model(model: ScriptedModel) -> ScriptedModel:
+def use_model[Model: ChatModel](model: Model) -> Model:
     app.dependency_overrides[chat_model] = lambda: model
     return model
 
@@ -171,6 +178,15 @@ def test_provider_error_is_opaque(client):
     assert response.json() == {"error": "model_unavailable"}
     assert FAKE_KEY not in response.text
     assert policy_excerpt not in response.text
+
+
+def test_model_timeout_gives_503(client):
+    use_model(GeminiModel(client=FakeGeminiClient(error=TimeoutError("read timed out"))))
+
+    response = client.post("/api/chat", json=chat_body(user("Oi")))
+
+    assert response.status_code == 503
+    assert response.json() == {"error": "model_unavailable"}
 
 
 def test_missing_api_key_gives_503_and_health_stays_up(client, monkeypatch):

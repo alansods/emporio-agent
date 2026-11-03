@@ -18,8 +18,8 @@
 
 ## 4. Model request timeout (`feat(agent): bound model requests with a timeout`)
 
-- [ ] 4.1 Add a test to `tests/test_agent.py` that the `GenerateContentConfig` sent through `FakeGeminiClient` has `http_options.timeout == 15000`, and a chat API test that a `TimeoutError` from the model gives 503; verify the first fails
-- [ ] 4.2 Add `MODEL_TIMEOUT_MS` to `config.py` and pass it in `GeminiModel.generate` (design D6); verify `pytest` passes
+- [x] 4.1 Add a test to `tests/test_agent.py` that the `GenerateContentConfig` sent through `FakeGeminiClient` has `http_options.timeout == 15000`, and a chat API test that a `TimeoutError` from the model gives 503; verify the first fails
+- [x] 4.2 Add `MODEL_TIMEOUT_MS` to `config.py` and pass it in `GeminiModel.generate` (design D6); verify `pytest` passes
 
 ## 5. Integration check
 

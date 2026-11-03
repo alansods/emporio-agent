@@ -195,3 +195,11 @@ def test_gemini_request_uses_overridden_model(monkeypatch):
     run_turn(QUESTION, "pt-BR", model=GeminiModel(client=client))
 
     assert client.calls[0]["model"] == "gemini-3.8-pro"
+
+
+def test_gemini_request_carries_the_timeout():
+    client = FakeGeminiClient(response=gemini_response(text_response("Olá!")))
+
+    run_turn(QUESTION, "pt-BR", model=GeminiModel(client=client))
+
+    assert client.calls[0]["config"].http_options.timeout == 15_000
