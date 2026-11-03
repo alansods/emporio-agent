@@ -33,20 +33,29 @@
 
 ## 3. Web: cards and trace panel (commit: `feat(web): show product and order cards and the turn trace`)
 
-- [ ] 3.1 Write failing component tests: `__tests__/cards/ProductCard.test.tsx` ("Product card in Portuguese",
+- [x] 3.1 Write failing component tests: `__tests__/cards/ProductCard.test.tsx` ("Product card in Portuguese",
   "Product card in English", "Promotion shown", "Availability label"); `__tests__/cards/OrderCard.test.tsx` ("Order
   card", dates do not shift with the time zone); `__tests__/trace/TracePanel.test.tsx` ("Collapsed by default",
   "Keyboard toggle" with `user-event`, "Error outcome label", "Unknown error code", "Reply without tools");
   `__tests__/chat/ChatApp.test.tsx` updated for "Successful turn" with cards and trace under the bubble, "Reload"
   keeping card and panel, and "Switching language re-labels cards". Verify they fail.
-- [ ] 3.2 Implement design D8: `components/ProductCard`, `components/OrderCard`, `components/TracePanel` with CSS
+- [x] 3.2 Implement design D8: `components/ProductCard`, `components/OrderCard`, `components/TracePanel` with CSS
   Modules and tokens, the new keys in `locales/en.json` and `locales/pt-BR.json`, and the cards and panel under each
   agent bubble in `ChatApp`. Verify `pnpm test` (including dictionary parity), `pnpm typecheck`, `pnpm lint`,
   `pnpm format:check` and `pnpm build` pass.
-- [ ] 3.3 Manual check with `pnpm dev` plus `uvicorn` (real key): ask for the GD20, for "violões Yamaha" and for an
+- [x] 3.3 Manual check with `pnpm dev` plus `uvicorn` (real key): ask for the GD20, for "violões Yamaha" and for an
   order with the right and a wrong name; cards and panel match the reply, the panel opens with Enter, nothing
   scrolls horizontally in a 360 px frame, switching language re-labels cards and panel, reload keeps them. Record
   the result here; fix findings inside this group before committing.
+  Result (2026-11-03, `gemini-3.5-flash-lite`): passed. GD20 card 2199 / 2089.05 / 12x 183.25 with one
+  `search_products` step; "violões Yamaha" gave 7 cards and one step (count 7); order 2 with the owner's name gave
+  an order card (Entregue, Cartão de crédito em 6x); order 1 with another name gave no card, outcome
+  `order_not_verified` and no order data in the trace. Real Enter on a focused summary opens the panel. 360 px
+  same-origin iframe with all panels open: document and feed `scrollWidth == clientWidth`. EN switch re-labeled
+  cards, amounts (R$2,199.00), dates and the panel summary. A fresh load restored all 9 cards and 4 panels.
+  Note: the keyboard test uses a focus check plus click instead of `user-event` (not installed; adding it would be
+  a new dependency); real Enter was checked here. Finding outside this change: the model text rounded the C40 to
+  "R$ 599,00" while the card shows R$ 599,90 from the tool; prompt tuning belongs to `conversation-examples`.
 
 ## 4. Docs (commit: `docs: document cards, trace and reply formatting`)
 

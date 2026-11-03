@@ -7,9 +7,14 @@ import styles from "./MessageBubble.module.css";
 
 const AVATAR_SIZE = 18;
 
-type MessageBubbleProps = { role: ChatMessage["role"]; children: ReactNode };
+type MessageBubbleProps = {
+  role: ChatMessage["role"];
+  children: ReactNode;
+  /** Shown under an agent bubble, e.g. answer cards and the trace panel. */
+  footer?: ReactNode;
+};
 
-export function MessageBubble({ role, children }: MessageBubbleProps) {
+export function MessageBubble({ role, children, footer }: MessageBubbleProps) {
   if (role === "user") {
     return (
       <div className={`${styles.row} ${styles.userRow}`}>
@@ -22,7 +27,10 @@ export function MessageBubble({ role, children }: MessageBubbleProps) {
       <span className={styles.avatar}>
         <GuitarGlyph size={AVATAR_SIZE} />
       </span>
-      <div className={`${styles.bubble} ${styles.agent}`}>{children}</div>
+      <div className={styles.stack}>
+        <div className={`${styles.bubble} ${styles.agent}`}>{children}</div>
+        {footer}
+      </div>
     </div>
   );
 }

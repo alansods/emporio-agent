@@ -3,6 +3,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 
+import { AnswerCards } from "@/components/Cards/AnswerCards";
 import { ChatShell } from "@/components/ChatShell/ChatShell";
 import { Composer } from "@/components/Composer/Composer";
 import { ErrorAlert } from "@/components/ErrorAlert/ErrorAlert";
@@ -11,6 +12,7 @@ import { LanguageToggle } from "@/components/LanguageToggle/LanguageToggle";
 import { Greeting } from "@/components/MessageBubble/Greeting";
 import { MessageBubble } from "@/components/MessageBubble/MessageBubble";
 import { TypingIndicator } from "@/components/MessageBubble/TypingIndicator";
+import { TracePanel } from "@/components/TracePanel/TracePanel";
 import { sendTurn, type TurnInput } from "@/lib/chat/client";
 import { useI18n } from "@/lib/i18n/I18nProvider";
 import { renderReply } from "@/lib/markdown/renderReply";
@@ -85,7 +87,16 @@ export function ChatApp() {
       >
         <Greeting showSuggestions={history.length === 0 && !turn.isPending} onPick={send} />
         {history.map((message, index) => (
-          <MessageBubble key={index} role={message.role}>
+          <MessageBubble
+            key={index}
+            role={message.role}
+            footer={
+              <>
+                {message.cards && <AnswerCards cards={message.cards} />}
+                {message.trace && <TracePanel trace={message.trace} />}
+              </>
+            }
+          >
             {message.role === "agent" ? renderReply(message.text) : message.text}
           </MessageBubble>
         ))}

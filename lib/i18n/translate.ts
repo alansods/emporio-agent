@@ -36,3 +36,8 @@ export function translateCount(
   const template = dictionary[`${key}_${form}`] ?? DICTIONARIES[locale][`${key}_other`];
   return interpolate(template, { ...values, count });
 }
+
+/** For keys built from API values (e.g. an error code) that the dictionary may not know. */
+export function isMessageKey(key: string): key is MessageKey {
+  return key in en;
+}

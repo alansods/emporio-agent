@@ -1,3 +1,6 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+
 import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -8,6 +11,10 @@ import en from "@/locales/en.json";
 import ptBR from "@/locales/pt-BR.json";
 
 const HISTORY_KEY = "emporio.history.v1";
+const FULL_RESPONSE: { reply: string } = JSON.parse(
+  readFileSync(join(process.cwd(), "tests/fixtures/chat_response.json"), "utf8"),
+);
+const PRODUCT_NAME = "Ohana CK-20 Concert Natural";
 
 type Deferred = { resolve: (response: Response) => void };
 
@@ -201,6 +208,25 @@ describe("turns", () => {
     ]);
   });
 
+  it("shows cards and a closed trace panel under the reply", async () => {
+    stubFetch(jsonResponse(200, FULL_RESPONSE));
+    renderApp();
+
+    type("Ohana e pedido 1");
+    pressEnter();
+
+    await within(feed()).findByRole("heading", { name: PRODUCT_NAME });
+    const articles = within(feed()).getAllByRole("article");
+    expect(articles).toHaveLength(2);
+    expect(articles[0]).toHaveTextContent(PRODUCT_NAME);
+    expect(articles[1]).toHaveTextContent(ptBR["orderStatus.delivered"]);
+    const panel = within(feed()).getByRole("group") as HTMLDetailsElement;
+    expect(panel.open).toBe(false);
+    expect(
+      within(feed()).getByText("Ohana CK-20 Concert Natural", { selector: "strong" }),
+    ).toBeInTheDocument();
+  });
+
   it("shows HTML in a reply as literal text", async () => {
     stubFetch(jsonResponse(200, { reply: "<b>oi</b>" }));
     renderApp();
@@ -335,6 +361,20 @@ describe("persistence", () => {
     expect(texts).toEqual(["Oi", "Olá!"]);
   });
 
+  it("keeps cards and the trace panel after a reload", async () => {
+    stubFetch(jsonResponse(200, FULL_RESPONSE));
+    const { unmount } = renderApp();
+    type("Ohana e pedido 1");
+    pressEnter();
+    await within(feed()).findByRole("heading", { name: PRODUCT_NAME });
+
+    unmount();
+    renderApp();
+
+    expect(within(feed()).getByRole("heading", { name: PRODUCT_NAME })).toBeInTheDocument();
+    expect(within(feed()).getByRole("group")).toBeInTheDocument();
+  });
+
   it.each([["not json"], [JSON.stringify([{ role: "system", text: "x" }])], [JSON.stringify({})]])(
     "treats corrupted storage %s as an empty conversation",
     (raw) => {
@@ -435,6 +475,22 @@ describe("language", () => {
     for (const value of Object.values(previous)) {
       expect(strings, value).not.toContain(value);
     }
+  });
+
+  it("re-labels cards and the trace panel", async () => {
+    stubFetch(jsonResponse(200, FULL_RESPONSE));
+    renderApp();
+    type("Ohana e pedido 1");
+    pressEnter();
+    await within(feed()).findByRole("heading", { name: PRODUCT_NAME });
+
+    fireEvent.click(screen.getByRole("button", { name: "EN" }));
+
+    const [product, order] = within(feed()).getAllByRole("article");
+    expect(product?.textContent?.replace(/\u00a0/g, " ")).toContain("R$439.20");
+    expect(product).toHaveTextContent(en["availability.available"]);
+    expect(order).toHaveTextContent(en["orderStatus.delivered"]);
+    expect(within(feed()).getByRole("group")).toHaveTextContent(en["trace.title"]);
   });
 
   it("keeps existing replies as written", () => {
