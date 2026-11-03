@@ -29,12 +29,13 @@ cp .env.example .env
 Two terminals, from the repo root:
 
 ```bash
-uvicorn api.index:app --reload --port 8000   # API (venv active)
-pnpm dev                                     # web app on http://localhost:3000
+uvicorn api.index:app --reload --port 8000 --env-file .env   # API (venv active)
+pnpm dev                                                    # web app on http://localhost:3000
 ```
 
 In development, Next.js proxies `/api/*` to the API on port 8000. Check it with
-`curl localhost:3000/api/health`.
+`curl localhost:3000/api/health`. `--env-file` loads `.env` into the API process (it needs `python-dotenv`, a dev
+dependency); on Vercel the variables come from the project settings.
 
 ### Test and lint
 

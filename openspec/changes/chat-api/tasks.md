@@ -2,8 +2,8 @@
 
 ## 1. Local env loading (`chore(api): load .env for local api runs`)
 
-- [ ] 1.1 Add `python-dotenv` to `requirements-dev.txt`, pinned to the latest release; verify `uv pip install -r requirements-dev.txt` succeeds
-- [ ] 1.2 Change the documented dev command to `uvicorn api.index:app --reload --port 8000 --env-file .env` in README "Run locally" and the contributor command table; verify that command starts with the placeholder `.env` and `curl localhost:8000/api/health` returns `{"status":"ok"}`
+- [x] 1.1 Add `python-dotenv` to `requirements-dev.txt`, pinned to the latest release; verify `uv pip install -r requirements-dev.txt` succeeds
+- [x] 1.2 Change the documented dev command to `uvicorn api.index:app --reload --port 8000 --env-file .env` in README "Run locally" and the contributor command table; verify that command starts with the placeholder `.env` and `curl localhost:8000/api/health` returns `{"status":"ok"}`
 
 ## 2. Chat endpoint, input limits and error mapping (`feat(api): add chat endpoint with input limits`)
 
