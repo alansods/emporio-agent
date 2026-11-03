@@ -2,16 +2,16 @@
 
 ## 1. Deploy configuration under test (commit: `feat(deploy): add vercel config for the api function`)
 
-- [ ] 1.1 Write `tests/test_vercel_config.py` from the CI scenarios of "API routes reach the Python function",
+- [x] 1.1 Write `tests/test_vercel_config.py` from the CI scenarios of "API routes reach the Python function",
   "Function bundle carries runtime files" and "Function duration covers a full turn": rewrite `/api/:path*` to
   `/api/index`; `includeFiles` covers `emporio_agent/**`, `data/*.csv` and `data/politicas.txt`; `excludeFiles`
   covers `node_modules`, `.next`, tests, docs and `data/*.pdf`; `maxDuration > (MAX_TOOL_ROUNDS + 1) *
   MODEL_TIMEOUT_MS / 1000`; no `env` block holding `GEMINI_API_KEY` or `MODEL`. Verify `pytest` fails because
   `vercel.json` is missing.
-- [ ] 1.2 Add `vercel.json` (`$schema`, rewrite, `functions["api/index.py"]` with `includeFiles`, `excludeFiles`,
+- [x] 1.2 Add `vercel.json` (`$schema`, rewrite, `functions["api/index.py"]` with `includeFiles`, `excludeFiles`,
   `maxDuration: 120`, `regions: ["gru1"]`) per design D1 to D4. Verify `pytest`, `ruff check .`,
   `ruff format --check .`, `pnpm format:check` and `pnpm build` pass locally.
-- [ ] 1.3 Confirm `next.config.ts` still adds its `/api` rewrite only in development, so production routing comes
+- [x] 1.3 Confirm `next.config.ts` still adds its `/api` rewrite only in development, so production routing comes
   only from `vercel.json`. Verify by reading the file and by `pnpm build` output listing no `/api` route.
 
 ## 2. Vercel project and environment (no commit, external setup)
