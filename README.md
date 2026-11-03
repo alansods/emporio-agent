@@ -24,6 +24,9 @@ source .venv/bin/activate
 cp .env.example .env
 ```
 
+Set `GEMINI_API_KEY` in `.env`. The agent uses `gemini-3.5-flash-lite` by default; set `MODEL` to use another
+Gemini model.
+
 ### Run locally
 
 Two terminals, from the repo root:

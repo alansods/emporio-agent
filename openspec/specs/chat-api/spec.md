@@ -1,8 +1,8 @@
 # chat-api Specification
 
 ## Purpose
-HTTP API served by the Python function that powers the chat. It exposes a health check and, in later changes, the
-chat endpoint that runs the agent.
+HTTP API served by the Python function that powers the chat. It exposes a health check and the chat endpoint that
+runs one agent turn, with input limits, per-IP rate limiting and opaque JSON errors.
 
 ## Requirements
 

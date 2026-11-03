@@ -36,7 +36,7 @@ repo, kept under test, and served through a web app.
 | Web tests | Vitest + React Testing Library, optional Playwright smoke |
 | Web lint | ESLint + Prettier |
 | Backend | Python 3.12, FastAPI, Pydantic, Google Gen AI SDK (`google-genai`, function calling) |
-| LLM | Gemini, default `gemini-3.8-flash` (free tier available), overridable by `MODEL` env var |
+| LLM | Gemini, default `gemini-3.5-flash-lite` (free tier available; `gemini-3.8-flash` timed out on 2026-11-02), overridable by `MODEL` env var |
 | Data access | Standard library `csv` (pandas removed to keep cold starts small) |
 | API tests | pytest, LLM client mocked for contract tests. Lint: ruff |
 | CI | GitHub Actions: lint + tests for web and api on every push |

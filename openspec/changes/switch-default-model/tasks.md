@@ -12,13 +12,13 @@
 
 ## 2. Docs (commit: `docs: document gemini-3.5-flash-lite as default model`)
 
-- [ ] 2.1 Update the LLM row in `openspec/project.md` to the new default, with the reason in one short clause
+- [x] 2.1 Update the LLM row in `openspec/project.md` to the new default, with the reason in one short clause
   (latency of `gemini-3.8-flash` on 2026-11-02); verify by reading the row
-- [ ] 2.2 Name the default model and the `MODEL` override in `README.md` (next to the `.env` step); verify
+- [x] 2.2 Name the default model and the `MODEL` override in `README.md` (next to the `.env` step); verify
   `pnpm format:check` passes
-- [ ] 2.3 Rewrite the Purpose of `openspec/specs/chat-api/spec.md` to describe the existing health and chat
+- [x] 2.3 Rewrite the Purpose of `openspec/specs/chat-api/spec.md` to describe the existing health and chat
   endpoints (no "in later changes"); verify `openspec validate --specs` passes
-- [ ] 2.4 Update the default model in the local `CLAUDE.md` (untracked); verify `git status` does not list it
+- [x] 2.4 Update the default model in the local `CLAUDE.md` (untracked); verify `git status` does not list it
 
 ## 3. Real-model check
 
