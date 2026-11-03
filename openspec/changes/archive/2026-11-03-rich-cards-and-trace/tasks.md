@@ -66,10 +66,13 @@
 
 ## 5. Production acceptance (no commit; fixes get their own `fix(...)` commit with a test)
 
-- [ ] 5.1 After groups 1 to 4 are pushed and the deployment is ready, on https://emporio-agent-three.vercel.app in
+- [x] 5.1 After groups 1 to 4 are pushed and the deployment is ready, on https://emporio-agent-three.vercel.app in
   `pt-BR` ask "Quanto custa o violão Takamine GD20?": the reply shows R$ 2.199,00, PIX R$ 2.089,05 and 12x R$ 183,25
   without raw `**`, a GD20 product card with the same values and a trace panel with one `search_products` step
   ("Takamine GD20 in production"). Record the result here.
+  Result (2026-11-03, deployment of 3a3108f): passed. Reply quoted R$ 2.199,00, PIX R$ 2.089,05 and 12x R$ 183,25
+  with no raw `**`; one GD20 card with the same values; panel summary "Como respondi · 1 consulta a ferramenta ·
+  3,3 s". The API body had one `search_products` step with outcome products, count 1, and `model_calls` 2.
 
 ## Workflow follow-up
 
