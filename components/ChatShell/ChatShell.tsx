@@ -7,9 +7,11 @@ type ChatShellProps = {
   children: ReactNode;
   alert: ReactNode;
   composer: ReactNode;
+  /** Shown beside the chat panel on wide screens. */
+  aside: ReactNode;
 };
 
-export function ChatShell({ feedLabel, children, alert, composer }: ChatShellProps) {
+export function ChatShell({ feedLabel, children, alert, composer, aside }: ChatShellProps) {
   return (
     <main className={styles.layout}>
       <div className={styles.panel}>
@@ -19,6 +21,7 @@ export function ChatShell({ feedLabel, children, alert, composer }: ChatShellPro
         {alert}
         {composer}
       </div>
+      {aside}
     </main>
   );
 }

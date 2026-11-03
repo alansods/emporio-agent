@@ -15,6 +15,22 @@ const FULL_RESPONSE: { reply: string } = JSON.parse(
   readFileSync(join(process.cwd(), "tests/fixtures/chat_response.json"), "utf8"),
 );
 const PRODUCT_NAME = "Ohana CK-20 Concert Natural";
+const ORDER_ONLY_RESPONSE = {
+  reply: "Seu pedido foi entregue.",
+  cards: [],
+  trace: {
+    model_calls: 2,
+    duration_ms: 1200,
+    steps: [
+      {
+        tool: "get_order_status",
+        arguments: { order_id: 7, name_or_email: "Letícia Gonçalves Rocha" },
+        outcome: { kind: "order" },
+        duration_ms: 2,
+      },
+    ],
+  },
+};
 
 type Deferred = { resolve: (response: Response) => void };
 
@@ -85,6 +101,11 @@ function pressEnter(options: { shiftKey?: boolean } = {}) {
 
 function feed(): HTMLElement {
   return screen.getByRole("log");
+}
+
+function tracePanel(locale: Locale = "pt-BR"): HTMLElement {
+  const dictionary = locale === "en" ? en : ptBR;
+  return screen.getByRole("complementary", { name: dictionary["trace.title"] });
 }
 
 function alternating(count: number): ChatMessage[] {
@@ -208,9 +229,10 @@ describe("turns", () => {
     ]);
   });
 
-  it("shows cards and a closed trace panel under the reply", async () => {
+  it("shows cards under the reply and the trace only in the side panel", async () => {
     stubFetch(jsonResponse(200, FULL_RESPONSE));
     renderApp();
+    expect(within(tracePanel()).getByText(ptBR["trace.empty"])).toBeInTheDocument();
 
     type("Ohana e pedido 1");
     pressEnter();
@@ -220,11 +242,29 @@ describe("turns", () => {
     expect(articles).toHaveLength(2);
     expect(articles[0]).toHaveTextContent(PRODUCT_NAME);
     expect(articles[1]).toHaveTextContent(ptBR["orderStatus.delivered"]);
-    const panel = within(feed()).getByRole("group") as HTMLDetailsElement;
-    expect(panel.open).toBe(false);
+    expect(within(feed()).queryByText("search_products()")).toBeNull();
+    expect(within(tracePanel()).getByText("“Ohana e pedido 1”")).toBeInTheDocument();
+    expect(within(tracePanel()).getByText("search_products()")).toBeInTheDocument();
+    expect(within(tracePanel()).getByText("get_order_status()")).toBeInTheDocument();
     expect(
       within(feed()).getByText("Ohana CK-20 Concert Natural", { selector: "strong" }),
     ).toBeInTheDocument();
+  });
+
+  it("switches the side panel to the newest turn", async () => {
+    stubFetch(jsonResponse(200, FULL_RESPONSE), jsonResponse(200, ORDER_ONLY_RESPONSE));
+    renderApp();
+    type("Ohana e pedido 1");
+    pressEnter();
+    await within(feed()).findByRole("heading", { name: PRODUCT_NAME });
+
+    type("E o pedido 7?");
+    pressEnter();
+
+    await within(feed()).findByText(ORDER_ONLY_RESPONSE.reply);
+    expect(within(tracePanel()).getByText("“E o pedido 7?”")).toBeInTheDocument();
+    expect(within(tracePanel()).getByText("get_order_status()")).toBeInTheDocument();
+    expect(within(tracePanel()).queryByText("search_products()")).toBeNull();
   });
 
   it("shows HTML in a reply as literal text", async () => {
@@ -361,7 +401,7 @@ describe("persistence", () => {
     expect(texts).toEqual(["Oi", "Olá!"]);
   });
 
-  it("keeps cards and the trace panel after a reload", async () => {
+  it("keeps cards and the side panel trace after a reload", async () => {
     stubFetch(jsonResponse(200, FULL_RESPONSE));
     const { unmount } = renderApp();
     type("Ohana e pedido 1");
@@ -372,7 +412,19 @@ describe("persistence", () => {
     renderApp();
 
     expect(within(feed()).getByRole("heading", { name: PRODUCT_NAME })).toBeInTheDocument();
-    expect(within(feed()).getByRole("group")).toBeInTheDocument();
+    expect(within(tracePanel()).getByText("get_order_status()")).toBeInTheDocument();
+  });
+
+  it("shows the empty panel for a history saved before cards", () => {
+    renderApp({
+      history: [
+        { role: "user", text: "Oi" },
+        { role: "agent", text: "Olá!" },
+      ],
+    });
+
+    expect(within(feed()).getByText("Olá!")).toBeInTheDocument();
+    expect(within(tracePanel()).getByText(ptBR["trace.empty"])).toBeInTheDocument();
   });
 
   it.each([["not json"], [JSON.stringify([{ role: "system", text: "x" }])], [JSON.stringify({})]])(
@@ -432,6 +484,7 @@ describe("keyboard and accessibility", () => {
       "EN",
       "PT-BR",
       ptBR["header.newConversation"],
+      ptBR["trace.title"],
       ptBR["greeting.suggestion1"],
       ptBR["greeting.suggestion2"],
       ptBR["greeting.suggestion3"],
@@ -449,6 +502,60 @@ describe("keyboard and accessibility", () => {
     expect(
       screen.getByRole("button", { name: ptBR["header.newConversation"] }),
     ).toBeInTheDocument();
+  });
+});
+
+describe("trace sheet on narrow screens", () => {
+  function sheetButton(): HTMLElement {
+    return screen.getByRole("button", { name: ptBR["trace.title"] });
+  }
+
+  function sheet(): HTMLDialogElement {
+    return document.querySelector("dialog") as HTMLDialogElement;
+  }
+
+  it("opens the latest trace in a modal dialog from the header", async () => {
+    stubFetch(jsonResponse(200, FULL_RESPONSE));
+    renderApp();
+    type("Ohana e pedido 1");
+    pressEnter();
+    await within(feed()).findByRole("heading", { name: PRODUCT_NAME });
+
+    fireEvent.click(sheetButton());
+
+    expect(sheet().open).toBe(true);
+    expect(within(sheet()).getByRole("heading", { name: ptBR["trace.title"] })).toBeInTheDocument();
+    expect(within(sheet()).getByText("get_order_status()")).toBeInTheDocument();
+  });
+
+  it("closes from its close button and returns focus to the header button", () => {
+    renderApp();
+    fireEvent.click(sheetButton());
+
+    fireEvent.click(within(sheet()).getByRole("button", { name: ptBR["trace.close"] }));
+
+    expect(sheet().open).toBe(false);
+    expect(within(sheet()).queryByText(ptBR["trace.empty"])).toBeNull();
+    expect(sheetButton()).toHaveFocus();
+  });
+
+  it("closes on a backdrop click", () => {
+    renderApp();
+    fireEvent.click(sheetButton());
+
+    fireEvent.click(sheet());
+
+    expect(sheet().open).toBe(false);
+  });
+
+  it("returns focus when the browser closes it, as Esc does", () => {
+    renderApp();
+    fireEvent.click(sheetButton());
+
+    act(() => sheet().close());
+
+    expect(within(sheet()).queryByText(ptBR["trace.empty"])).toBeNull();
+    expect(sheetButton()).toHaveFocus();
   });
 });
 
@@ -490,7 +597,7 @@ describe("language", () => {
     expect(product?.textContent?.replace(/\u00a0/g, " ")).toContain("R$439.20");
     expect(product).toHaveTextContent(en["availability.available"]);
     expect(order).toHaveTextContent(en["orderStatus.delivered"]);
-    expect(within(feed()).getByRole("group")).toHaveTextContent(en["trace.title"]);
+    expect(within(tracePanel("en")).getByText("1 product found")).toBeInTheDocument();
   });
 
   it("keeps existing replies as written", () => {

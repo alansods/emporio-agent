@@ -12,8 +12,10 @@ import { LanguageToggle } from "@/components/LanguageToggle/LanguageToggle";
 import { Greeting } from "@/components/MessageBubble/Greeting";
 import { MessageBubble } from "@/components/MessageBubble/MessageBubble";
 import { TypingIndicator } from "@/components/MessageBubble/TypingIndicator";
-import { TracePanel } from "@/components/TracePanel/TracePanel";
+import { TraceAside } from "@/components/TraceAside/TraceAside";
+import { TraceSheet } from "@/components/TraceSheet/TraceSheet";
 import { sendTurn, type TurnInput } from "@/lib/chat/client";
+import { latestTrace } from "@/lib/chat/latestTrace";
 import { useI18n } from "@/lib/i18n/I18nProvider";
 import { renderReply } from "@/lib/markdown/renderReply";
 import { historyStore } from "@/lib/storage/historyStore";
@@ -43,6 +45,7 @@ export function ChatApp() {
     onError: (_error, input) => setDraft((current) => current || input.text),
   });
 
+  const trace = latestTrace(history);
   const pendingText = turn.isPending ? turn.variables.text : undefined;
 
   useEffect(() => {
@@ -70,11 +73,13 @@ export function ChatApp() {
           <div className={styles.actions}>
             <LanguageToggle />
             <NewConversationButton onClick={startOver} />
+            <TraceSheet entry={trace} />
           </div>
         }
       />
       <ChatShell
         feedLabel={t("feed.label")}
+        aside={<TraceAside entry={trace} />}
         alert={turn.error && <ErrorAlert error={turn.error} />}
         composer={
           <Composer
@@ -90,12 +95,7 @@ export function ChatApp() {
           <MessageBubble
             key={index}
             role={message.role}
-            footer={
-              <>
-                {message.cards && <AnswerCards cards={message.cards} />}
-                {message.trace && <TracePanel trace={message.trace} />}
-              </>
-            }
+            footer={message.cards && <AnswerCards cards={message.cards} />}
           >
             {message.role === "agent" ? renderReply(message.text) : message.text}
           </MessageBubble>

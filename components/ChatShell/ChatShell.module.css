@@ -2,6 +2,7 @@
   flex: 1;
   min-height: 0;
   display: flex;
+  gap: var(--space-4);
   padding: var(--space-4) var(--space-5) var(--space-5);
 }
 
