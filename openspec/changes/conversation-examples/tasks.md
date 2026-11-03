@@ -8,10 +8,10 @@
 
 ## 2. Behavior check and recorder (`feat(scripts): add real-model behavior check and example recorder`)
 
-- [ ] 2.1 Write `tests/test_record_examples.py` from the model-evaluation scenarios: matching call, name by words,
+- [x] 2.1 Write `tests/test_record_examples.py` from the model-evaluation scenarios: matching call, name by words,
   wrong argument named in the report, unexpected tool, expected outcome, missing key exits non-zero without a model
   call, rate limit override accepts more than ten requests (fake model), example Markdown content; verify they fail
-- [ ] 2.2 Implement `scripts/record_examples.py` (D1-D3, D5): turn dataclasses, matchers, `check_turn`,
+- [x] 2.2 Implement `scripts/record_examples.py` (D1-D3, D5): turn dataclasses, matchers, `check_turn`,
   `render_example`, the 8 cases and 5 conversations, `main()` with `.env` loading and the limiter override; verify
   `pytest` and `ruff check .` pass and CI makes no network call
 
