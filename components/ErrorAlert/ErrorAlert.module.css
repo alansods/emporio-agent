@@ -1,0 +1,20 @@
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin: 0 var(--space-5) var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid var(--danger);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+}
+
+.text {
+  margin: 0;
+}
+
+@media (max-width: 760px) {
+  .alert {
+    margin-inline: var(--space-3);
+  }
+}

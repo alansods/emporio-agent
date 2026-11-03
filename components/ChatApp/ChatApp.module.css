@@ -1,0 +1,33 @@
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.newChat {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 44px;
+  min-height: 44px;
+  justify-content: center;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  cursor: pointer;
+}
+
+.newChat:hover {
+  background: var(--surface-2);
+}
+
+@media (max-width: 760px) {
+  .newChat {
+    padding: 0;
+  }
+
+  .newChatLabel {
+    display: none;
+  }
+}

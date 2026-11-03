@@ -33,7 +33,7 @@
 
 ## 3. Conversation UI (commit: `feat(web): add chat conversation with persisted history`)
 
-- [ ] 3.1 Write failing component tests in `__tests__/chat/ChatApp.test.tsx` with a stubbed `fetch` and the real
+- [x] 3.1 Write failing component tests in `__tests__/chat/ChatApp.test.tsx` with a stubbed `fetch` and the real
   providers, one per `chat-ui` scenario: "First visit", "Picking a suggestion", "Enter sends", "Shift+Enter adds a
   line", "Blank message", "No double send", "Text over the limit", "Waiting for the reply", "Successful turn",
   "Reply text is not interpreted as HTML", "Full history stays on screen", every "Localized error states" scenario,
@@ -42,7 +42,7 @@
   "Switching to English" and "Switching to Portuguese" (render, switch, assert no value of the previous dictionary
   is in `document.body.textContent` or any `aria-label`), "Existing replies stay as written" and "Locale switch
   before sending". Update `__tests__/home.test.tsx` to render `Home` inside the providers. Verify they fail.
-- [ ] 3.2 Implement `lib/storage/historyStore.ts` (design D3), `components/ChatApp`, `MessageBubble`, `Greeting`,
+- [x] 3.2 Implement `lib/storage/historyStore.ts` (design D3), `components/ChatApp`, `MessageBubble`, `Greeting`,
   `TypingIndicator`, `ErrorAlert`, `Composer`, `NewConversationButton`, the `actions` slot in `Header`, the new props
   of `ChatShell`, and `app/page.tsx`, with CSS Modules per design D7 and D8. Stub `Element.prototype.scrollIntoView`
   in `vitest.setup.ts`. Verify `pnpm test`, `pnpm typecheck`, `pnpm lint`, `pnpm format:check` and `pnpm build` pass.

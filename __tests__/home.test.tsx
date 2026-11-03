@@ -4,10 +4,19 @@ import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import Home from "@/app/page";
+import { Providers } from "@/components/Providers/Providers";
+
+function renderHome() {
+  return render(
+    <Providers initialLocale="en">
+      <Home />
+    </Providers>,
+  );
+}
 
 describe("app shell", () => {
   it("shows the brand in the banner with a decorative glyph", () => {
-    render(<Home />);
+    renderHome();
 
     const banner = screen.getByRole("banner");
     expect(within(banner).getByText("Empório da Música")).toBeInTheDocument();
@@ -16,14 +25,14 @@ describe("app shell", () => {
   });
 
   it("has a main landmark with a polite live feed", () => {
-    render(<Home />);
+    renderHome();
 
     const main = screen.getByRole("main");
     expect(main.querySelector('[aria-live="polite"]')).not.toBeNull();
   });
 
   it("offers no theme toggle", () => {
-    render(<Home />);
+    renderHome();
 
     expect(
       screen.queryByRole("button", { name: /theme|dark|light|tema|escuro|claro/i }),
