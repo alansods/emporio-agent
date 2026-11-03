@@ -2,7 +2,7 @@
 
 ## Purpose
 A per-turn trace of the tool calls the agent made, their outcomes and timings, returned by the chat API and shown in
-a collapsible panel, so a reader can check how an answer was produced.
+a side panel beside the chat, so a reader can check how an answer was produced.
 
 ## Requirements
 
@@ -29,19 +29,29 @@ The trace SHALL NOT contain tool results or the system prompt.
 - **WHEN** the turn stops at the tool round limit and returns the fallback reply
 - **THEN** `trace.steps` lists every tool call that ran
 
-### Requirement: Trace panel
-Each agent reply that has a trace SHALL show a collapsed, keyboard-operable disclosure under its bubble. Its
-summary SHALL state the number of tool calls and the turn duration in seconds; expanded, it SHALL list each step's
-localized tool label, tool identifier, arguments as JSON, localized outcome and duration, plus the model call
-count. All text SHALL follow the active locale and the panel SHALL fit a 360 px viewport.
+### Requirement: Trace side panel
+On viewports wider than 760 px the page SHALL show a trace panel beside the chat, always open, with no collapse
+control. It SHALL show the latest agent reply's trace: the question it answers, each step's localized tool label,
+tool identifier, arguments as a key/value list, localized outcome and duration, then the model call count and turn
+duration. With no such reply it SHALL show an empty state. Agent bubbles SHALL NOT show a trace. All text SHALL
+follow the active locale.
 
-#### Scenario: Collapsed by default
-- **WHEN** a reply with one search step is shown
-- **THEN** the panel is closed and its summary reads "1 tool call" and the duration in seconds in the active locale
+#### Scenario: Latest reply on desktop
+- **WHEN** the viewport is 1280 px wide and the latest reply answered "Quanto custa o GD20?" with one search step
+- **THEN** the panel beside the chat shows the question, `search_products` with argument `name` = `GD20` and the outcome "1 product found" in the active locale
+- **AND** the panel has no collapse control
 
-#### Scenario: Keyboard toggle
-- **WHEN** a keyboard user focuses the panel summary and presses Enter
-- **THEN** the panel opens and shows the step with its localized outcome, for example "1 product found"
+#### Scenario: Panel follows the newest turn
+- **WHEN** a second turn completes with a `get_order_status` step
+- **THEN** the panel shows that step and no longer shows the first turn's search
+
+#### Scenario: Empty state
+- **WHEN** the conversation has no agent reply
+- **THEN** the panel shows the localized empty state text
+
+#### Scenario: No trace under replies
+- **WHEN** a reply with a trace is shown in the feed
+- **THEN** its bubble shows the reply and its cards but no trace
 
 #### Scenario: Error outcome label
 - **WHEN** a step has outcome `error` with code `order_not_verified`
@@ -52,5 +62,22 @@ count. All text SHALL follow the active locale and the panel SHALL fit a 360 px 
 - **THEN** the panel shows the localized generic error label followed by the code
 
 #### Scenario: Reply without tools
-- **WHEN** a reply's trace has no steps
-- **THEN** the summary reads "No tools used" in the active locale and the model call count is still available when expanded
+- **WHEN** the latest reply's trace has no steps
+- **THEN** the panel reads "No tools used" in the active locale and still shows the model call count
+
+#### Scenario: Locale switch updates the panel
+- **WHEN** the panel shows a trace in `pt-BR` and the user switches to `en`
+- **THEN** the panel's labels and outcomes are in English and the quoted question is unchanged
+
+### Requirement: Trace sheet on narrow screens
+At 760 px and below the side panel SHALL be hidden and a labelled header button SHALL open the same trace content
+in a modal bottom sheet. The sheet SHALL close with its close button, Esc or a backdrop click, return focus to the
+header button, and fit a 360 px viewport without horizontal scroll.
+
+#### Scenario: Narrow screen sheet
+- **WHEN** the viewport is 360 px wide and the user activates the header trace button
+- **THEN** a modal dialog shows the latest reply's trace without horizontal scroll
+
+#### Scenario: Closing the sheet
+- **WHEN** the sheet is open and the user presses Esc
+- **THEN** the sheet closes and focus returns to the header trace button

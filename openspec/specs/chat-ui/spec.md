@@ -151,7 +151,7 @@ text; the reply is never inserted as HTML.
 #### Scenario: Takamine GD20 in production
 - **WHEN** a user on the production URL in `pt-BR` sends "Quanto custa o violão Takamine GD20?"
 - **THEN** the agent bubble shows R$ 2.199,00, PIX R$ 2.089,05 and 12x R$ 183,25
-- **AND** a product card for the GD20 and a trace panel appear under it
+- **AND** a product card for the GD20 appears under it and the side trace panel shows the `search_products` call
 
 ### Requirement: Response shape is validated
 The client SHALL validate a 200 response body before using it and SHALL treat a body without a string `reply`, or
@@ -222,7 +222,8 @@ messages saved before cards existed SHALL load as messages without cards or trac
 
 #### Scenario: Reload
 - **WHEN** a user completes a turn that returned a product card and reloads the page
-- **THEN** the feed shows the same user and agent messages in the same order, with the same card and trace panel
+- **THEN** the feed shows the same user and agent messages in the same order, with the same card
+- **AND** the trace panel shows the same latest trace
 
 #### Scenario: Corrupted storage
 - **WHEN** the stored value is not valid JSON or has the wrong shape
@@ -230,7 +231,7 @@ messages saved before cards existed SHALL load as messages without cards or trac
 
 #### Scenario: History saved before cards
 - **WHEN** storage holds messages with only `role` and `text`
-- **THEN** they are shown as before, without cards or trace panels
+- **THEN** they are shown as before, without cards, and the trace panel shows its empty state
 
 #### Scenario: Request strips cards and trace
 - **WHEN** the history holds an agent message with cards and trace and the user sends a new message
@@ -247,8 +248,9 @@ storage, removes any alert, shows the greeting again and moves focus to the comp
 - **AND** focus is on the composer text field
 
 ### Requirement: Keyboard-only use
-Every control (language toggle, new conversation, suggestions, text field, send button) SHALL be reachable with Tab,
-operable from the keyboard and show a visible focus indicator. Icon-only buttons SHALL have an accessible name.
+Every control (language toggle, new conversation, trace button on narrow screens, suggestions, text field, send
+button) SHALL be reachable with Tab, operable from the keyboard and show a visible focus indicator. Icon-only
+buttons SHALL have an accessible name.
 
 #### Scenario: Tab order
 - **WHEN** a keyboard user tabs from the top of the page
@@ -256,4 +258,4 @@ operable from the keyboard and show a visible focus indicator. Icon-only buttons
 
 #### Scenario: Narrow screen labels
 - **WHEN** the viewport is 360 px wide and buttons show only icons
-- **THEN** the new conversation and send buttons still expose their localized names
+- **THEN** the trace, new conversation and send buttons still expose their localized names

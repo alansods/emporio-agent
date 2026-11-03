@@ -45,9 +45,12 @@
   phones), and under Known limitations add that only the latest turn's trace is shown and that sent replies keep
   their language when the toggle changes. Verify `pnpm format:check` and `ruff format --check .` pass (ruff formats
   Markdown code blocks).
-- [ ] 4.2 After push, CI green (`gh run list --limit 1`) and a prod smoke test on
+- [x] 4.2 After push, CI green (`gh run list --limit 1`) and a prod smoke test on
   https://emporio-agent-three.vercel.app: GD20 in `pt-BR` shows the card and the `search_products` call in the
   panel ("Takamine GD20 in production"), and switching to EN re-labels the panel. Record the result here.
+  Result (2026-11-03, deploy of 5953b50): CI green. Prod GD20 in `pt-BR`: R$ 2.199,00, PIX R$ 2.089,05, 12x R$ 183,25,
+  card under the reply, panel with `search_products()` (`name` = `Takamine GD20`, "1 produto encontrado", 2,3 s).
+  EN switch re-labelled the panel ("How the agent answered", "1 product found").
 
 ## Workflow follow-up
 
