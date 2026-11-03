@@ -19,11 +19,12 @@
 - [x] 2.1 After group 1 is pushed and CI is green, create the Vercel project `emporio-agent` on the
   `alansods-projects` team by importing `github.com/alansods/emporio-agent` (preset Next.js, root `.`, production
   branch `main`). Verify the project shows the Git connection and a first production deployment starts.
-- [ ] 2.2 The user adds `GEMINI_API_KEY` in Project Settings > Environment Variables, Sensitive, Production and
+- [x] 2.2 The user adds `GEMINI_API_KEY` in Project Settings > Environment Variables, Sensitive, Production and
   Preview, then redeploys production. The value is never pasted in chat. Verify by listing env vars (names, targets
   and types only, no decryption).
-- [ ] 2.3 Check the "No model override is pinned" scenario: the env var listing contains no `MODEL` and no
+- [x] 2.3 Check the "No model override is pinned" scenario: the env var listing contains no `MODEL` and no
   `REFERENCE_DATE` for any target. Verify by the same listing.
+  2.2 and 2.3 were confirmed by the user in the dashboard; the Vercel API token here gets 403 on listing env vars.
 - [x] 2.4 Check the build log of the production deployment: Python 3.12, `requirements.txt` installed, `api/index.py`
   built as one function in `gru1`, no build warnings about missing files. Verify by reading the deployment events.
   The first deploy installed from `pyproject.toml` and shipped without FastAPI; fixed by design D7 (a2d2720).
