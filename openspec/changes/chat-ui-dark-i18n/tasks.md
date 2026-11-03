@@ -2,9 +2,9 @@
 
 ## 1. Chat client: schema, limits, trimming, errors (commit: `feat(web): add chat api client with zod validation`)
 
-- [ ] 1.1 Add `@tanstack/react-query@^5` and `zod@^4` with `pnpm add` (justified in proposal.md > Impact). Verify
+- [x] 1.1 Add `@tanstack/react-query@^5` and `zod@^4` with `pnpm add` (justified in proposal.md > Impact). Verify
   `pnpm install --frozen-lockfile` and `pnpm build` still pass.
-- [ ] 1.2 Write failing tests: `__tests__/chat/trim.test.ts` (scenarios "Short history", "Long history is trimmed":
+- [x] 1.2 Write failing tests: `__tests__/chat/trim.test.ts` (scenarios "Short history", "Long history is trimmed":
   25 alternating messages give at most 20, starting with `user`, ending with the new one);
   `__tests__/chat/limits.test.ts` (reads `emporio_agent/config.py`, fails if `MAX_MESSAGES` or `MAX_MESSAGE_CHARS`
   differ); `__tests__/chat/schema.test.ts` ("Malformed success body", "Extra fields", and the contract fixture
@@ -12,7 +12,7 @@
   `POST /api/chat` with `{messages, locale}`; 422 / 429 with `Retry-After: 30` / 429 without header / 503 / 500 /
   `fetch` rejection / malformed 200 map to the kinds of design D6). Add `tests/test_contract.py` validating the same
   fixture with `ChatResponse`. Verify `pnpm test` fails for the missing modules.
-- [ ] 1.3 Implement `lib/chat/limits.ts`, `lib/chat/trim.ts`, `lib/chat/schema.ts`, `lib/chat/errors.ts` and
+- [x] 1.3 Implement `lib/chat/limits.ts`, `lib/chat/trim.ts`, `lib/chat/schema.ts`, `lib/chat/errors.ts` and
   `lib/chat/client.ts` (`sendTurn`) per design D4 to D6, plus the fixture. Verify `pnpm test`, `pnpm typecheck`,
   `pnpm lint`, `pytest` and `ruff check .` pass.
 
