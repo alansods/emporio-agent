@@ -2,12 +2,12 @@
 
 ## 1. Default model (commit: `fix(agent): default to gemini-3.5-flash-lite`)
 
-- [ ] 1.1 Update the default-model assertions in `tests/test_config.py` (`test_model_defaults_to_gemini_flash`) and
+- [x] 1.1 Update the default-model assertions in `tests/test_config.py` (`test_model_defaults_to_gemini_flash`) and
   `tests/test_agent.py` (`test_gemini_request_uses_default_model_and_manual_function_calling`) to expect
   `gemini-3.5-flash-lite`; verify both fail with `pytest tests/test_config.py tests/test_agent.py`
-- [ ] 1.2 Set `DEFAULT_MODEL = "gemini-3.5-flash-lite"` in `emporio_agent/config.py`; verify `pytest`,
+- [x] 1.2 Set `DEFAULT_MODEL = "gemini-3.5-flash-lite"` in `emporio_agent/config.py`; verify `pytest`,
   `ruff check .` and `ruff format --check .` pass and the override tests still pass unchanged
-- [ ] 1.3 Update `.env.example` comment and commented example to `gemini-3.5-flash-lite`; verify
+- [x] 1.3 Update `.env.example` comment and commented example to `gemini-3.5-flash-lite`; verify
   `git grep -n "gemini-3.8-flash" -- . ':!openspec/changes'` lists no code, test or env file
 
 ## 2. Docs (commit: `docs: document gemini-3.5-flash-lite as default model`)

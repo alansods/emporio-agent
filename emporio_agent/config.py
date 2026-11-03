@@ -7,7 +7,7 @@ from pathlib import Path
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 
 DEFAULT_REFERENCE_DATE = "2026-03-23"
-DEFAULT_MODEL = "gemini-3.8-flash"
+DEFAULT_MODEL = "gemini-3.5-flash-lite"
 MAX_TOOL_ROUNDS = 5
 MODEL_TIMEOUT_MS = 15_000
 SEARCH_RESULT_LIMIT = 8

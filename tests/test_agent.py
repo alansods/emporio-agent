@@ -183,7 +183,7 @@ def test_gemini_request_uses_default_model_and_manual_function_calling(monkeypat
     run_turn(QUESTION, "pt-BR", model=GeminiModel(client=client))
 
     (call,) = client.calls
-    assert call["model"] == "gemini-3.8-flash"
+    assert call["model"] == "gemini-3.5-flash-lite"
     assert call["config"].automatic_function_calling.disable is True
     assert load_policies() in call["config"].system_instruction
 

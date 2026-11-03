@@ -16,10 +16,10 @@ def test_reference_date_can_be_overridden(monkeypatch):
     assert config.reference_date() == date(2026, 2, 20)
 
 
-def test_model_defaults_to_gemini_flash(monkeypatch):
+def test_model_defaults_to_gemini_flash_lite(monkeypatch):
     monkeypatch.delenv("MODEL", raising=False)
 
-    assert config.model_name() == "gemini-3.8-flash"
+    assert config.model_name() == "gemini-3.5-flash-lite"
 
 
 def test_model_can_be_overridden(monkeypatch):
