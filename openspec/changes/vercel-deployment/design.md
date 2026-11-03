@@ -83,6 +83,15 @@ when listing; the check only lists names, targets and types.
 holds a secret or a `MODEL` value. Platform behavior (path forwarding, bundle contents, env targets) is verified by
 the manual production smoke, matching the "Deploy smoke: manual" row of the project test strategy.
 
+### D7. No `pyproject.toml`: runtime dependencies come only from `requirements.txt`
+
+Found on the first deploy: when `pyproject.toml` exists, Vercel installs dependencies from it and ignores
+`requirements.txt`. Ours held only ruff and pytest settings, so the function shipped without FastAPI
+(`ModuleNotFoundError: No module named 'fastapi'`). The tool settings move to `ruff.toml` and `pytest.ini`, and the
+contract test fails if `pyproject.toml` comes back.
+Alternative: declare `[project].dependencies` in `pyproject.toml`. Rejected because it duplicates
+`requirements.txt`, which CI, the local setup and the docs already use, and two lists drift.
+
 ## Risks / Trade-offs
 
 - [The rewrite forwards `/api/index` instead of the original path to ASGI, so every route 404s] → `GET /api/health`

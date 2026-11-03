@@ -8,7 +8,8 @@ import pytest
 
 from emporio_agent.config import MAX_TOOL_ROUNDS, MODEL_TIMEOUT_MS
 
-VERCEL_CONFIG_PATH = Path(__file__).resolve().parent.parent / "vercel.json"
+REPO_ROOT = Path(__file__).resolve().parent.parent
+VERCEL_CONFIG_PATH = REPO_ROOT / "vercel.json"
 API_FUNCTION = "api/index.py"
 MS_PER_SECOND = 1000
 
@@ -42,6 +43,12 @@ def test_bundle_excludes_non_runtime_files(api_function: dict[str, Any], pattern
 def test_max_duration_covers_worst_case_turn(api_function: dict[str, Any]) -> None:
     worst_case_turn_seconds = (MAX_TOOL_ROUNDS + 1) * MODEL_TIMEOUT_MS / MS_PER_SECOND
     assert api_function["maxDuration"] > worst_case_turn_seconds
+
+
+def test_function_dependencies_come_from_requirements_txt() -> None:
+    """Vercel installs from pyproject.toml when it exists, ignoring requirements.txt."""
+    assert (REPO_ROOT / "requirements.txt").is_file()
+    assert not (REPO_ROOT / "pyproject.toml").exists()
 
 
 @pytest.mark.parametrize("name", ["GEMINI_API_KEY", "MODEL", "REFERENCE_DATE"])
