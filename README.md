@@ -2,7 +2,7 @@
 
 Customer support chat agent for Empório da Música, a fictional musical instrument store in Campo Grande, MS. A Python
 agent (FastAPI, Gemini function calling) answers from the store's CSV data and policy manual; a Next.js web app
-renders the chat, product and order cards, and a trace of the tool calls behind each reply.
+renders the chat, product and order cards, and a side panel with the tool calls behind the latest reply.
 
 Live: https://emporio-agent-three.vercel.app (chat UI in English and Brazilian Portuguese; the API is at `/api/chat`).
 
@@ -250,6 +250,9 @@ At most 20 messages of up to 2000 characters per request, 10 chat requests per m
   omit the customer's name.
 - `trace` (`emporio_agent/trace.py`) lists each tool call with its arguments, duration and an outcome summary, plus
   the model call count and turn duration. It leaves out tool results and the prompt.
+- The trace of the latest reply sits in a side panel next to the chat, always open, so the tool calls stay in view
+  without a click per reply. On screens up to 760 px the panel is hidden and a header button opens it as a native
+  modal `<dialog>` (focus trap and Esc from the browser). The language toggle re-labels the UI, cards and panel live.
 - Replies render a small Markdown subset (paragraphs, bold, bullets) with an own renderer; anything else, HTML
   included, stays literal text.
 - i18n is an own React context over `locales/en.json` and `locales/pt-BR.json` with keys typed from `en.json`, plurals
@@ -288,7 +291,11 @@ curl -H 'content-type: application/json' \
   ones the reply leaves out. Superlative questions are covered by `pick`, which returns only the cheapest or most
   expensive products; other selections the model makes in prose ("the best for beginners") still show all the cards.
 - **Reply language follows the UI selector.** A question in English with the UI in Portuguese gets a Portuguese
-  answer, by design, so the reply matches the interface.
+  answer, by design, so the reply matches the interface. Switching the language later re-labels the UI, cards and
+  trace, but replies already sent keep the language they were written in (translating them would mean another
+  model call per switch).
+- **Only the latest trace is shown.** The side panel follows the newest reply; earlier turns' tool calls are kept in
+  the history but cannot be opened. Next: select a reply to show its trace.
 - **Rate limit is per instance.** The 10 requests per minute per IP live in memory per function instance; on
   serverless the effective limit can be higher. Next: a Vercel Firewall rule or a shared store keyed by IP.
 - **Short memory.** Only the last 20 messages reach the model. The conversation, including names and emails typed in
