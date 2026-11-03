@@ -63,9 +63,28 @@ The chat is one client component tree (`components/ChatApp`) over a stateless AP
   localized alert explains it: 422 invalid request, 429 rate limited (with the `Retry-After` seconds), 503 model
   unavailable, anything else generic. "New conversation" clears the history.
 - The response is validated with Zod (`lib/chat/schema.ts`), a mirror of the Pydantic `ChatResponse`. Both sides
-  check the same fixture, `tests/fixtures/chat_response.json`.
+  check the same fixture, `tests/fixtures/chat_response.json`, so a field renamed on one side fails CI. Requests
+  send only each message's `role` and `text`; stored cards and traces never go back to the API.
 - TanStack Query's `useMutation` holds the pending turn and its error; mutations never retry, because a retry would
   spend rate limit and model quota.
+
+### Cards, trace and reply formatting
+
+`POST /api/chat` returns `{reply, cards, trace}`.
+
+- `cards` are built in Python (`emporio_agent/cards.py`) from the turn's tool results, never from the model's text,
+  so prices, PIX, installments and deadlines on a card are exactly what the tools computed; the UI only formats them.
+  Every product a successful `search_products` call returned becomes a product card (deduplicated by id, at most 8
+  per turn); every verified `get_order_status` result becomes an order card without the customer's name or notes.
+  A failed identity check (`order_not_verified`) produces no card.
+- `trace` (`emporio_agent/trace.py`) lists each tool call with its name, the arguments the model sent, its
+  duration and an outcome summary (products found and count, order found, or an error code), plus the number of
+  model calls and the whole turn's duration. It leaves out tool results and the system prompt. The UI shows it in
+  a collapsed native `<details>` panel ("How I answered") under the reply.
+- Cards and trace are stored with the reply in the history, so a reload keeps them.
+- Agent replies render a small Markdown subset with an own renderer (`lib/markdown/renderReply.tsx`): paragraphs,
+  line breaks, `**bold**` and `-`/`*` bullet lists, built as React elements. Anything else, HTML included, stays
+  literal text. Switch to `react-markdown` if replies ever need links, tables or headings.
 
 ### Internationalization
 
@@ -111,7 +130,10 @@ curl -H 'content-type: application/json' \
   on screen.
 - The conversation, including any name, email or order number typed in it, stays in the browser's local storage
   until "New conversation" is used.
-- Replies are shown as plain text, so Markdown markers the model sometimes uses (`**bold**`) appear as typed.
+- Cards list every product a search returned, including ones the reply does not mention. Markdown beyond the
+  subset (headings, numbered lists, links) appears as typed.
+- Card values come from the tools, but the reply text is still the model's prose; it can misquote a value the card
+  shows correctly (seen once: R$ 599,90 written as "R$ 599,00").
 - Reading the locale cookie in the root layout makes the home page dynamically rendered instead of static.
 
 ## License

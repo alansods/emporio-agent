@@ -59,7 +59,7 @@
 
 ## 4. Docs (commit: `docs: document cards, trace and reply formatting`)
 
-- [ ] 4.1 README: response contract `{reply, cards, trace}`, cards built in Python from tool results (never from
+- [x] 4.1 README: response contract `{reply, cards, trace}`, cards built in Python from tool results (never from
   model text), what the trace shows and leaves out, the Markdown subset and when to switch to `react-markdown`, and
   the limitation that cards list every product a search returned. Update `openspec/project.md` only if a decision
   here differs from it. Verify `pnpm format:check` and `ruff format --check .` pass.
