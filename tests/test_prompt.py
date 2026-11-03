@@ -63,3 +63,15 @@ def test_prompt_asks_for_narrow_searches():
 
     for search_filter in ("`category`", "`max_price`", "`only_available`"):
         assert search_filter in prompt
+
+
+def test_prompt_forbids_order_lookup_without_identity():
+    prompt = build_system_prompt("pt-BR", REFERENCE_DATE)
+
+    assert "Não chame `get_order_status` antes" in prompt
+
+
+def test_prompt_asks_to_mention_open_return_windows():
+    prompt = build_system_prompt("pt-BR", REFERENCE_DATE)
+
+    assert "ainda abertas" in prompt
