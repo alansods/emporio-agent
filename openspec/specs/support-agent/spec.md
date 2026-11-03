@@ -45,6 +45,22 @@ to pass every search filter the question allows.
 - **THEN** the system prompt instructs the model to use the category, price and availability filters of
   `search_products` whenever the question gives them
 
+### Requirement: Prompt order rules
+The system prompt SHALL instruct the model to ask for the order owner's full name or email before calling
+`get_order_status`, and to cite the return windows still open when the one the customer asked about is closed.
+
+#### Scenario: Prompt asks for identity before order lookup
+- **WHEN** a turn runs
+- **THEN** the system prompt instructs the model not to call `get_order_status` before the customer gives the full
+  name or email of the order owner
+- **AND** it forbids filling `name_or_email` with the order number or any other text
+
+#### Scenario: Prompt asks to cite open return windows
+- **WHEN** a turn runs
+- **THEN** the system prompt instructs the model to take deadlines from the order's `return_windows` instead of
+  counting days
+- **AND** when the requested window is closed, to also cite the windows still open with their deadlines
+
 ### Requirement: Reply language follows the locale
 The system prompt SHALL instruct the model to reply in English for locale `en` and in Brazilian Portuguese for
 locale `pt-BR`, while data and policies stay in Portuguese.
