@@ -7,9 +7,9 @@
 
 ## 2. Chat endpoint, input limits and error mapping (`feat(api): add chat endpoint with input limits`)
 
-- [ ] 2.1 Write `tests/test_chat_api.py` from the endpoint, input limit, model failure and unexpected error scenarios (successful turn, history and English locale reach the model, tool turn, 21 messages with the model not called, 2001 characters, blank text, last message from agent, locale `es`, empty list, extra field, non-JSON body without echo, 20 messages with 2000 characters accepted, provider error body exactly `model_unavailable` without key or policy text, missing key 503 while health stays 200, unexpected exception 500 with `raise_server_exceptions=False`); verify it fails
-- [ ] 2.2 Add `MAX_MESSAGES` and `MAX_MESSAGE_CHARS` to `config.py` and implement `emporio_agent/api_models.py` (design D1); verify the model-level validation tests pass
-- [ ] 2.3 Rename `_default_model` to `default_model` in `agent.py`; add `POST /api/chat` with the `chat_model` dependency and the 422, 503 and 500 handlers in `api/index.py` (design D2, D3, D4); verify `pytest`, `ruff check .` and `ruff format --check .` pass with `GEMINI_API_KEY` unset
+- [x] 2.1 Write `tests/test_chat_api.py` from the endpoint, input limit, model failure and unexpected error scenarios (successful turn, history and English locale reach the model, tool turn, 21 messages with the model not called, 2001 characters, blank text, last message from agent, locale `es`, empty list, extra field, non-JSON body without echo, 20 messages with 2000 characters accepted, provider error body exactly `model_unavailable` without key or policy text, missing key 503 while health stays 200, unexpected exception 500 with `raise_server_exceptions=False`); verify it fails
+- [x] 2.2 Add `MAX_MESSAGES` and `MAX_MESSAGE_CHARS` to `config.py` and implement `emporio_agent/api_models.py` (design D1); verify the model-level validation tests pass
+- [x] 2.3 Rename `_default_model` to `default_model` in `agent.py`; add `POST /api/chat` with the `chat_model` dependency and the 422, 503 and 500 handlers in `api/index.py` (design D2, D3, D4); verify `pytest`, `ruff check .` and `ruff format --check .` pass with `GEMINI_API_KEY` unset
 
 ## 3. Per-IP rate limit (`feat(api): rate limit chat requests per ip`)
 

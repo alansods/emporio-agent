@@ -106,7 +106,7 @@ def _generate(
         raise AgentError() from exc
 
 
-def _default_model() -> GeminiModel:
+def default_model() -> GeminiModel:
     try:
         return GeminiModel()
     except Exception as exc:
@@ -117,7 +117,7 @@ def run_turn(
     messages: list[ChatMessage], locale: Locale, model: ChatModel | None = None
 ) -> TurnResult:
     """One turn over the client-sent history; the model runs at most MAX_TOOL_ROUNDS + 1 times."""
-    model = model or _default_model()
+    model = model or default_model()
     system = build_system_prompt(locale, reference_date())
     tools = build_tools()
     contents = [_to_content(message) for message in messages]
