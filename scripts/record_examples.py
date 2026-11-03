@@ -321,7 +321,7 @@ CONVERSATIONS = (
         "Identity check before any order data; the 7-day regret window is closed, the legal "
         "warranty is still open.",
         (
-            Turn("Comprei um violão no pedido 7 e me arrependi, posso devolver?", NO_TOOL),
+            Turn("Comprei um instrumento no pedido 7 e me arrependi, posso devolver?", NO_TOOL),
             Turn(
                 "Meu nome é Letícia Gonçalves Rocha.",
                 (ExpectedCall("get_order_status", {"order_id": 7}, outcome="order"),),

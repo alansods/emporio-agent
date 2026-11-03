@@ -10,9 +10,9 @@ A policy answer from the manual, then an accessory request declined politely.
 
 **Agent:**
 
-A nossa loja fica na **Rua 14 de Maio, 3200 — Centro, Campo Grande - MS**. 
+O nosso endereço é **Rua 14 de Maio, 3200 — Centro, Campo Grande - MS**. 
 
-Posso te ajudar com mais alguma coisa?
+Posso te ajudar em mais alguma coisa?
 
 Tools:
 
@@ -22,9 +22,9 @@ Tools:
 
 **Agent:**
 
-Poxa, por aqui a gente trabalha **somente com instrumentos musicais**, então infelizmente não vendemos cordas, palhetas, cabos ou outros acessórios. 
+Trabalhamos **exclusivamente com instrumentos musicais**, por isso não vendemos acessórios como cordas, palhetas, cabos ou amplificadores. 
 
-Posso te ajudar a encontrar algum violão novo ou outro instrumento?
+Se estiver precisando de um violão novo para tirar o som, é só me falar! Posso te ajudar com mais alguma coisa?
 
 Tools:
 

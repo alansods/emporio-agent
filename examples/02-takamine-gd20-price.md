@@ -10,9 +10,9 @@ Price, PIX price and installments, all computed in Python and quoted from the to
 
 **Agent:**
 
-O violão **Takamine GD20 Dreadnought Natural** custa **R$ 2.199,00**, podendo ser parcelado em até **12x de R$ 183,25** sem juros. No pagamento via PIX, ele sai por **R$ 2.089,05**, já com o desconto de 5%. Temos unidades disponíveis em estoque!
+O **Takamine GD20 Dreadnought Natural** custa **R$ 2.199,00**, com opção no PIX por **R$ 2.089,05** (já com o desconto de 5%). Se preferir parcelar, dá para dividir em até 12x sem juros de **R$ 183,25** no cartão de crédito.
 
-Posso ajudar em mais alguma coisa?
+Posso te ajudar com mais alguma coisa?
 
 Tools:
 

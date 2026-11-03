@@ -10,22 +10,26 @@ English locale: Portuguese data and policy translated on the fly.
 
 **Agent:**
 
-Yes, we do! Check out these electric guitars under R$ 7.000,00 available right now:
+Yes, we have a couple of electric guitars available under R$ 7.000,00! 
 
-- **Fender Telecaster Player Series**: R$ 5.400,00 (or R$ 5.130,00 via PIX, or up to 12x of R$ 450,00 interest-free).
-- **PRS SE Custom 24**: R$ 6.800,00 (or R$ 6.460,00 via PIX, or up to 12x of R$ 566,67 interest-free).
+Check them out:
 
-Can I help you with anything else?
+- **Fender Telecaster Player Series**: R$ 5.400,00, or R$ 5.130,00 via PIX. You can also pay in up to **12x of R$ 450,00** without interest.
+- **PRS SE Custom 24**: R$ 6.800,00, or R$ 6.460,00 via PIX, or up to **12x of R$ 566,67** without interest.
+
+Let me know if you need help with anything else!
 
 Tools:
 
-- `search_products` `{"max_price": 7000, "only_available": true, "category": "Guitarras"}`: 2 products
+- `search_products` `{"max_price": 7000, "category": "Guitarras", "only_available": true}`: 2 products
 
 **Customer:** What is your return policy if I change my mind?
 
 **Agent:**
 
-For online purchases, you can request a return within **7 calendar days** of receiving the product if you change your mind, with no need for justification. The item must be in its original packaging, showing no signs of use, and with all accessories and manuals. The refund will be issued in the original payment method within up to 10 business days, and the return shipping is on us!
+If you buy online and change your mind, you can request a return within **7 calendar days** of receiving your product, no justification needed. 
+
+The instrument just needs to be in its original packaging, showing no signs of use, and with all accessories and manuals. The return shipping is on us, and your refund will be processed in up to 10 business days using the same payment method.
 
 Is there anything else I can help you with?
 
