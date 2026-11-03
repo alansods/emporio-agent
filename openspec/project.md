@@ -183,6 +183,8 @@ issues) 5. `chat-ui-dark-i18n` 6. `rich-cards-and-trace` 7. `conversation-exampl
 - API is stateless. The client keeps the conversation in `localStorage` and sends it each turn.
 - Public URL protection: max message length, max turns sent, max tool rounds, request timeout, basic per-IP rate
   limit. The Gemini key runs on the free tier or with a billing budget alert, so abuse cannot generate cost.
+- The rate limit lives in memory per Vercel function instance, so on serverless it is best effort (documented in the
+  README as a known limitation). The function runs in `gru1` (São Paulo), close to the store's customers.
 - Errors are clear and never leak stack traces or the system prompt.
 - `GEMINI_API_KEY` exists only server side.
 - Accessible and responsive: keyboard navigation, visible focus, `aria-live` feed, `prefers-reduced-motion`,
