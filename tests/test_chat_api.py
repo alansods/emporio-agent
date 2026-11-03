@@ -62,7 +62,12 @@ def test_successful_turn_returns_the_reply(client):
     response = client.post("/api/chat", json=chat_body(user("Oi")))
 
     assert response.status_code == 200
-    assert response.json() == {"reply": "Olá!"}
+    body = response.json()
+    assert body["reply"] == "Olá!"
+    assert body["cards"] == []
+    assert body["trace"]["steps"] == []
+    assert body["trace"]["model_calls"] == 1
+    assert body["trace"]["duration_ms"] >= 0
 
 
 def test_history_and_english_locale_reach_the_model(client):
@@ -83,7 +88,7 @@ def test_history_and_english_locale_reach_the_model(client):
     assert "reply in English" in request.system
 
 
-def test_tool_turn_returns_the_final_text(client):
+def test_tool_turn_returns_reply_cards_and_trace(client):
     model = use_model(
         ScriptedModel(
             [
@@ -96,8 +101,19 @@ def test_tool_turn_returns_the_final_text(client):
     response = client.post("/api/chat", json=chat_body(user("Quanto custa o Takamine GD20?")))
 
     assert response.status_code == 200
-    assert response.json() == {"reply": "O Takamine GD20 sai por R$ 2.199,00."}
+    body = response.json()
+    assert body["reply"] == "O Takamine GD20 sai por R$ 2.199,00."
     assert len(model.requests) == 2
+    (card,) = body["cards"]
+    assert card["type"] == "product"
+    assert card["name"] == "Takamine GD20 Dreadnought Natural"
+    assert (card["list_price"], card["pix_price"]) == (2199, 2089.05)
+    assert card["installments"] == {"count": 12, "amount": 183.25}
+    (step,) = body["trace"]["steps"]
+    assert step["tool"] == "search_products"
+    assert step["arguments"] == {"name": "Takamine GD20"}
+    assert step["outcome"] == {"kind": "products", "count": 1}
+    assert body["trace"]["model_calls"] == 2
 
 
 def test_too_many_messages_is_rejected_without_calling_the_model(client):

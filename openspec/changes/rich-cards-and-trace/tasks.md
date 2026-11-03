@@ -2,7 +2,7 @@
 
 ## 1. API: timing, cards, trace and response contract (commit: `feat(api): return cards and trace from chat turns`)
 
-- [ ] 1.1 Write failing tests: in `tests/test_agent.py` the `support-agent` "Tool call record" scenarios (record has
+- [x] 1.1 Write failing tests: in `tests/test_agent.py` the `support-agent` "Tool call record" scenarios (record has
   a non-negative integer `duration_ms`; `model_calls` is 1 without tools and 2 with one search round);
   `tests/test_cards.py` with hand-built records for every `answer-cards` API scenario ("No tools used", "Values
   match the tool result" against the real GD20 search result, "Tool error gives no card", "Two searches return the
@@ -11,7 +11,7 @@
   reached"); `tests/test_chat_api.py` updated for the `chat-api` scenarios with the scripted fake model
   ("Successful turn" body has `cards: []` and a trace with no steps, "Tool turn" has the GD20 card and one step);
   `tests/test_contract.py` validates the extended fixture. Verify `pytest` fails for the missing modules and fields.
-- [ ] 1.2 Implement design D1 to D5: `duration_ms` on `ToolCallRecord` and `model_calls` on `TurnResult` in
+- [x] 1.2 Implement design D1 to D5: `duration_ms` on `ToolCallRecord` and `model_calls` on `TurnResult` in
   `emporio_agent/agent.py`, card and trace models in `emporio_agent/api_models.py`, `emporio_agent/cards.py`,
   `emporio_agent/trace.py`, turn timing and the new body in `api/index.py`, and the extended
   `tests/fixtures/chat_response.json` (D9). Verify `pytest`, `ruff check .` and `ruff format --check .` pass, and

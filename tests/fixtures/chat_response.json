@@ -1,3 +1,53 @@
 {
-  "reply": "O Takamine GD20 Dreadnought Natural sai por R$ 2.199,00, ou R$ 2.089,05 no PIX, ou 12x de R$ 183,25 sem juros."
+  "reply": "O **Ohana CK-20 Concert Natural** está em promoção por R$ 439,20 ou 5x de R$ 87,84. Seu pedido 1 foi entregue em 25/10/2025.",
+  "cards": [
+    {
+      "type": "product",
+      "product_id": 121,
+      "name": "Ohana CK-20 Concert Natural",
+      "category": "Ukuleles",
+      "availability": "available",
+      "stock": 6,
+      "list_price": 549,
+      "promotion": { "name": "Desconto Exclusivo", "discount_percent": 20 },
+      "effective_price": 439.2,
+      "pix_price": null,
+      "installments": { "count": 5, "amount": 87.84 }
+    },
+    {
+      "type": "order",
+      "order_id": 1,
+      "status": "delivered",
+      "order_date": "2025-10-15",
+      "estimated_delivery": "2025-10-25",
+      "tracking_code": "BRAB1234567BR",
+      "total": 11499,
+      "payment_method": "pix",
+      "items": [{ "product_name": "Martin D-28 Dreadnought Natural", "quantity": 1 }],
+      "return_windows": [
+        { "kind": "regret", "deadline": "2025-11-01", "open": false },
+        { "kind": "preference_exchange", "deadline": "2025-11-01", "open": false },
+        { "kind": "defect_exchange", "deadline": "2025-11-14", "open": false },
+        { "kind": "legal_warranty", "deadline": "2026-01-23", "open": false }
+      ]
+    }
+  ],
+  "trace": {
+    "model_calls": 2,
+    "duration_ms": 2310,
+    "steps": [
+      {
+        "tool": "search_products",
+        "arguments": { "name": "Ohana CK-20" },
+        "outcome": { "kind": "products", "count": 1 },
+        "duration_ms": 4
+      },
+      {
+        "tool": "get_order_status",
+        "arguments": { "order_id": 1, "name_or_email": "Pedro Henrique Oliveira" },
+        "outcome": { "kind": "order" },
+        "duration_ms": 2
+      }
+    ]
+  }
 }

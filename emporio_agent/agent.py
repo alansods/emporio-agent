@@ -1,6 +1,7 @@
 """One stateless chat turn: Gemini function calling over the store tools, capped tool loop."""
 
 import os
+import time
 from dataclasses import dataclass
 from typing import Any, Literal, Protocol
 
@@ -30,12 +31,14 @@ class ToolCallRecord:
     name: str
     arguments: dict[str, Any]
     result: dict[str, Any]
+    duration_ms: int
 
 
 @dataclass(frozen=True)
 class TurnResult:
     reply: str
     tool_calls: list[ToolCallRecord]
+    model_calls: int
 
 
 class AgentError(Exception):
@@ -90,12 +93,20 @@ def _reply_text(content: types.Content) -> str:
     return "".join(texts).strip()
 
 
+def elapsed_ms(started: float) -> int:
+    """Whole milliseconds since a `time.perf_counter()` reading."""
+    return round((time.perf_counter() - started) * 1000)
+
+
 def _run_call(call: types.FunctionCall) -> tuple[ToolCallRecord, types.Part]:
     name = call.name or ""
     arguments = dict(call.args or {})
+    started = time.perf_counter()
     result = run_tool(name, arguments)
+    duration_ms = elapsed_ms(started)
     response = types.FunctionResponse(id=call.id, name=name, response=result)
-    return ToolCallRecord(name, arguments, result), types.Part(function_response=response)
+    record = ToolCallRecord(name, arguments, result, duration_ms)
+    return record, types.Part(function_response=response)
 
 
 def _generate(
@@ -131,7 +142,7 @@ def run_turn(
             reply = _reply_text(content)
             if not reply:
                 raise AgentError()
-            return TurnResult(reply=reply, tool_calls=records)
+            return TurnResult(reply=reply, tool_calls=records, model_calls=round_number + 1)
         if round_number == MAX_TOOL_ROUNDS:
             break
         executed = [_run_call(call) for call in calls]
@@ -139,4 +150,6 @@ def run_turn(
         contents.append(content)
         contents.append(types.Content(role="user", parts=[part for _, part in executed]))
 
-    return TurnResult(reply=FALLBACK_REPLY[locale], tool_calls=records)
+    return TurnResult(
+        reply=FALLBACK_REPLY[locale], tool_calls=records, model_calls=MAX_TOOL_ROUNDS + 1
+    )

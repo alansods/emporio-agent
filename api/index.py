@@ -1,6 +1,7 @@
 """FastAPI app served as a Vercel Python Function. Routes keep the /api prefix."""
 
 import logging
+import time
 from typing import Annotated
 
 from fastapi import Depends, FastAPI, Request
@@ -8,10 +9,19 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from emporio_agent.agent import AgentError, ChatMessage, ChatModel, default_model, run_turn
+from emporio_agent.agent import (
+    AgentError,
+    ChatMessage,
+    ChatModel,
+    default_model,
+    elapsed_ms,
+    run_turn,
+)
 from emporio_agent.api_models import ChatRequest, ChatResponse
+from emporio_agent.cards import build_cards
 from emporio_agent.config import CHAT_RATE_LIMIT, CHAT_RATE_WINDOW_SECONDS
 from emporio_agent.rate_limit import RateLimited, RateLimiter
+from emporio_agent.trace import build_trace
 
 logger = logging.getLogger(__name__)
 
@@ -86,5 +96,7 @@ def health() -> dict[str, str]:
 @app.post("/api/chat", dependencies=[Depends(enforce_rate_limit)])
 def chat(request: ChatRequest, model: Annotated[ChatModel, Depends(chat_model)]) -> ChatResponse:
     messages = [ChatMessage(role=message.role, text=message.text) for message in request.messages]
+    started = time.perf_counter()
     result = run_turn(messages, request.locale, model=model)
-    return ChatResponse(reply=result.reply)
+    trace = build_trace(result.tool_calls, result.model_calls, elapsed_ms(started))
+    return ChatResponse(reply=result.reply, cards=build_cards(result.tool_calls), trace=trace)

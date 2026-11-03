@@ -98,6 +98,9 @@ def test_tool_call_record_matches_the_call():
     assert record.name == "search_products"
     assert record.arguments == {"name": "Takamine GD20"}
     assert record.result["products"][0]["name"] == "Takamine GD20 Dreadnought Natural"
+    assert isinstance(record.duration_ms, int)
+    assert record.duration_ms >= 0
+    assert result.model_calls == 2
 
 
 def test_no_tools_used():
@@ -107,6 +110,7 @@ def test_no_tools_used():
 
     assert result.reply == "Olá! Como posso ajudar?"
     assert result.tool_calls == []
+    assert result.model_calls == 1
 
 
 @pytest.mark.parametrize(
