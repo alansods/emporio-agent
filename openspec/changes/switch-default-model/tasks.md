@@ -22,11 +22,11 @@
 
 ## 3. Real-model check
 
-- [ ] 3.1 With `MODEL` unset and the API running (`uvicorn api.index:app --port 8000 --env-file .env`), send three
+- [x] 3.1 With `MODEL` unset and the API running (`uvicorn api.index:app --port 8000 --env-file .env`), send three
   turns via `curl` to `/api/chat`: GD20 price (expect R$ 2.199,00 / PIX R$ 2.089,05 / 12x R$ 183,25 in the reply),
   a guitar strings question (expect a polite decline) and an order lookup with a wrong name (expect no order data);
   verify each returns 200 in under 15 s and record the results in the commit summary to the user
-- [ ] 3.2 Run `python scripts/record_examples.py` only if it exists by then; otherwise note that it is deferred to
+- [x] 3.2 Run `python scripts/record_examples.py` only if it exists by then; otherwise note that it is deferred to
   the examples change
 
 ## Workflow follow-up
