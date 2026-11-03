@@ -17,10 +17,10 @@
 
 ## 3. Real run and examples (`docs(examples): record example conversations`)
 
-- [ ] 3.1 Run `python scripts/record_examples.py` with the real key; verify every case passes (rerun once on a 503)
+- [x] 3.1 Run `python scripts/record_examples.py` with the real key; verify every case passes (rerun once on a 503)
   and the C40 and GD20 replies quote the exact values from their cards; if a case fails for a prompt reason, adjust
   the prompt in group 1 terms and rerun
-- [ ] 3.2 Review the five `examples/*.md` files (regret example: window closed, warranty open until 2026-05-18,
+- [x] 3.2 Review the five `examples/*.md` files (regret example: window closed, warranty open until 2026-05-18,
   nothing revealed before identity); verify `ruff format --check .` and `pnpm format:check` stay clean
 
 ## 4. Docs (`docs: document the behavior check and examples`)
