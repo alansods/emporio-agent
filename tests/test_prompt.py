@@ -75,3 +75,10 @@ def test_prompt_asks_to_mention_open_return_windows():
     prompt = build_system_prompt("pt-BR", REFERENCE_DATE)
 
     assert "ainda abertas" in prompt
+
+
+def test_prompt_asks_for_pick_on_superlatives():
+    prompt = build_system_prompt("pt-BR", REFERENCE_DATE)
+
+    assert "`pick` `cheapest`" in prompt
+    assert "`pick` `most_expensive`" in prompt

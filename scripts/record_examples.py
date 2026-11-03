@@ -266,6 +266,13 @@ CASES = (
         Turn("Quais violões até R$ 1000 vocês têm disponíveis?", (ACOUSTIC_UP_TO_1000,)),
     ),
     Case(
+        "cheapest-electric-guitar",
+        Turn(
+            "Qual a guitarra mais barata?",
+            (ExpectedCall("search_products", {"category": "Guitarras", "pick": "cheapest"}),),
+        ),
+    ),
+    Case(
         "order-owner",
         Turn(
             "Qual o status do pedido 6? Meu nome é Gabriel Santos Araújo.",

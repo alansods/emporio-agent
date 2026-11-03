@@ -151,7 +151,7 @@ def test_example_markdown_content():
 
 
 def test_cases_and_conversations_cover_the_brief():
-    assert len(CASES) == 8
+    assert len(CASES) == 9
     assert [conversation.slug for conversation in CONVERSATIONS] == [
         "01-acoustic-guitars",
         "02-takamine-gd20-price",
