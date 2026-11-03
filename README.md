@@ -136,8 +136,9 @@ design; a local model would complicate deploy.
 ### Interface: HTTP API plus a web chat
 
 The Python agent is served by FastAPI (`POST /api/chat`), which keeps it testable without a browser and usable with
-`curl`. A Next.js chat on top shows what a CLI cannot: product and order cards built from tool results, and a
-collapsible "How I answered" panel with each tool call. It also makes the agent reachable by a reviewer at a URL.
+`curl`. A Next.js chat on top shows what a CLI cannot: product and order cards built from tool results, and a side
+panel, "How the agent answered", with each tool call of the latest reply, its arguments and outcome. It also makes
+the agent reachable by a reviewer at a URL.
 The UI is in English and Portuguese, and the agent's reply follows the language selected in the UI (the `locale`
 field of each request), not the language of the question.
 
@@ -323,13 +324,16 @@ I used Claude Code (Anthropic's terminal coding agent) throughout, inside a spec
 4. **Archive.** After manual checks, the change is validated (`openspec validate --strict`) and archived, which
    merges its deltas into `openspec/specs/`.
 
-Tools the assistant used beyond editing code: the Vercel MCP server (deploy status, logs, docs), Chrome automation
-for checks in the real browser (360 px layout, keyboard, language switch, errors) and the real-model script for
-agent behavior.
+Tools the assistant used beyond editing code: a clickable design prototype of the chat, drawn before the UI work and
+approved by me as the visual reference; the Vercel MCP server (deploy status, logs, docs); Chrome automation for
+checks in the real browser (360 px layout, keyboard, language switch, errors); and the real-model script for agent
+behavior.
 
 What stayed with me: the scope and order of the changes, the technical decisions in each proposal, review of every
 diff and commit, the manual checks, and the calls when the model or the data disagreed with the plan (for example,
-switching to `gemini-3.5-flash-lite` after timeouts, or answering "cheapest" with a tool argument computed in Python instead of the model's reading of a list).
+switching to `gemini-3.5-flash-lite` after timeouts, answering "cheapest" with a tool argument computed in Python
+instead of the model's reading of a list, or bringing back the prototype's side panel for the trace after the first
+implementation hid it in a collapsed block under each reply).
 
 ## License
 
