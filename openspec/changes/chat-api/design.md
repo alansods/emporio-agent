@@ -31,12 +31,14 @@ class ChatMessageIn(BaseModel):
     role: Literal["user", "agent"]
     text: str = Field(min_length=1, max_length=MAX_MESSAGE_CHARS)
 
+
 class ChatRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
     messages: list[ChatMessageIn] = Field(min_length=1, max_length=MAX_MESSAGES)
     locale: Locale
 
     # model_validator(mode="after"): last message role must be "user"
+
 
 class ChatResponse(BaseModel):
     reply: str
