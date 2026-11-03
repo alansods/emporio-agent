@@ -2,9 +2,9 @@
 
 ## 1. Prompt tuning (`fix(api): quote tool values exactly and limit reply markdown`)
 
-- [ ] 1.1 Add tests to `tests/test_prompt.py` for the three new support-agent scenarios (exact tool values, Markdown
+- [x] 1.1 Add tests to `tests/test_prompt.py` for the three new support-agent scenarios (exact tool values, Markdown
   subset, narrow searches); verify they fail with `pytest tests/test_prompt.py`
-- [ ] 1.2 Add the D4 wording to `emporio_agent/prompt.py`; verify `pytest` and `ruff check .` pass
+- [x] 1.2 Add the D4 wording to `emporio_agent/prompt.py`; verify `pytest` and `ruff check .` pass
 
 ## 2. Behavior check and recorder (`feat(scripts): add real-model behavior check and example recorder`)
 

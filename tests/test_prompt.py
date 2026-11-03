@@ -39,3 +39,27 @@ def test_portuguese_locale_asks_for_brazilian_portuguese_replies():
 
     assert "português do Brasil" in prompt
     assert "reply in English" not in prompt
+
+
+def test_prompt_asks_for_exact_tool_values():
+    prompt = build_system_prompt("pt-BR", REFERENCE_DATE)
+
+    assert "exatamente" in prompt
+    assert "R$ 599,90" in prompt
+
+
+def test_prompt_limits_the_markdown():
+    prompt = build_system_prompt("pt-BR", REFERENCE_DATE)
+
+    assert "# Formato" in prompt
+    assert "**negrito**" in prompt
+    assert '"- "' in prompt
+    for forbidden in ("títulos", "tabelas", "listas numeradas", "links"):
+        assert forbidden in prompt
+
+
+def test_prompt_asks_for_narrow_searches():
+    prompt = build_system_prompt("pt-BR", REFERENCE_DATE)
+
+    for search_filter in ("`category`", "`max_price`", "`only_available`"):
+        assert search_filter in prompt
