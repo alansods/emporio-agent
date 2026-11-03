@@ -100,12 +100,12 @@ message contains no system prompt text, API key or provider stack trace.
 - **AND** the error message contains neither the policy manual text nor the API key
 
 ### Requirement: Model choice by environment
-The agent SHALL use the model named by the `MODEL` environment variable, defaulting to `gemini-3.8-flash`, and read
-the API key only from `GEMINI_API_KEY` on the server.
+The agent SHALL use the model named by the `MODEL` environment variable, defaulting to `gemini-3.5-flash-lite`, and
+read the API key only from `GEMINI_API_KEY` on the server.
 
 #### Scenario: Default model
 - **WHEN** `MODEL` is not set and a turn runs
-- **THEN** the model request names `gemini-3.8-flash`
+- **THEN** the model request names `gemini-3.5-flash-lite`
 
 #### Scenario: Overridden model
 - **WHEN** `MODEL` is `gemini-3.8-pro` and a turn runs
