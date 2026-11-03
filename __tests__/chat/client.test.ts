@@ -1,8 +1,15 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { sendTurn } from "@/lib/chat/client";
 import { ChatError, type ChatErrorKind } from "@/lib/chat/errors";
-import type { ChatMessage } from "@/lib/chat/schema";
+import { chatResponseSchema, type ChatMessage } from "@/lib/chat/schema";
+import type { StoredMessage } from "@/lib/storage/historyStore";
+
+const FIXTURE = chatResponseSchema.parse(
+  JSON.parse(readFileSync(join(process.cwd(), "tests/fixtures/chat_response.json"), "utf8")),
+);
 
 function jsonResponse(status: number, body: unknown, headers: Record<string, string> = {}) {
   return new Response(JSON.stringify(body), {
@@ -41,9 +48,9 @@ describe("sendTurn", () => {
       { role: "agent", text: "Hi, how can I help?" },
     ];
 
-    const reply = await sendTurn({ history, text: "Price of the GD20?", locale: "en" });
+    const turn = await sendTurn({ history, text: "Price of the GD20?", locale: "en" });
 
-    expect(reply).toBe("Hi!");
+    expect(turn.reply).toBe("Hi!");
     expect(fetchMock).toHaveBeenCalledTimes(1);
     const [url, init] = fetchMock.mock.calls[0] as unknown as [string, RequestInit];
     expect(url).toBe("/api/chat");
@@ -52,6 +59,32 @@ describe("sendTurn", () => {
       messages: [...history, { role: "user", text: "Price of the GD20?" }],
       locale: "en",
     });
+  });
+
+  it("returns the reply, cards and trace", async () => {
+    stubFetch(jsonResponse(200, FIXTURE));
+
+    const turn = await sendTurn({ history: [], text: "Oi", locale: "pt-BR" });
+
+    expect(turn.reply).toBe(FIXTURE.reply);
+    expect(turn.cards).toHaveLength(2);
+    expect(turn.trace?.steps).toHaveLength(2);
+  });
+
+  it("sends only role and text for every message", async () => {
+    const fetchMock = stubFetch(jsonResponse(200, { reply: "Ok" }));
+    const history: StoredMessage[] = [
+      { role: "user", text: "Ohana?" },
+      { role: "agent", text: "Temos.", cards: FIXTURE.cards, trace: FIXTURE.trace },
+    ];
+
+    await sendTurn({ history, text: "E o pedido 1?", locale: "pt-BR" });
+
+    const [, init] = fetchMock.mock.calls[0] as unknown as [string, RequestInit];
+    const body = JSON.parse(String(init.body)) as { messages: object[] };
+    for (const message of body.messages) {
+      expect(Object.keys(message).sort()).toEqual(["role", "text"]);
+    }
   });
 
   it.each<[string, Response, ChatErrorKind, number | undefined]>([

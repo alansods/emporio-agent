@@ -19,14 +19,14 @@
 
 ## 2. Web: schema, client, storage and Markdown subset (commit: `feat(web): parse cards and trace and render reply markdown`)
 
-- [ ] 2.1 Write failing tests: `__tests__/chat/schema.test.ts` ("Malformed card", "Reply only" reads `cards` as
+- [x] 2.1 Write failing tests: `__tests__/chat/schema.test.ts` ("Malformed card", "Reply only" reads `cards` as
   `[]` and no trace, "Extra fields", the extended fixture parses); `__tests__/chat/client.test.ts` (`sendTurn`
   returns reply, cards and trace; "Request strips cards and trace": every request message has only `role` and
   `text`); `__tests__/storage/history.test.ts` ("History saved before cards" loads `{role, text}` entries, cards and
   trace round-trip, corrupted value gives `[]`); `__tests__/markdown/renderReply.test.tsx` ("Bold and list",
   "Unmatched markers stay literal", "Reply text is not interpreted as HTML" with no `b` element, single line breaks
   kept). Verify they fail.
-- [ ] 2.2 Implement design D6 and D7: Zod card and trace schemas and the response schema in `lib/chat/schema.ts`,
+- [x] 2.2 Implement design D6 and D7: Zod card and trace schemas and the response schema in `lib/chat/schema.ts`,
   `sendTurn` result and request mapping in `lib/chat/client.ts`, `StoredMessage` in `lib/storage/historyStore.ts`,
   `lib/markdown/renderReply.tsx`, and use it in the agent `MessageBubble`. Verify `pnpm test`, `pnpm typecheck` and
   `pnpm lint` pass.

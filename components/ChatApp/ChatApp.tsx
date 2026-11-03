@@ -13,6 +13,7 @@ import { MessageBubble } from "@/components/MessageBubble/MessageBubble";
 import { TypingIndicator } from "@/components/MessageBubble/TypingIndicator";
 import { sendTurn, type TurnInput } from "@/lib/chat/client";
 import { useI18n } from "@/lib/i18n/I18nProvider";
+import { renderReply } from "@/lib/markdown/renderReply";
 import { historyStore } from "@/lib/storage/historyStore";
 
 import styles from "./ChatApp.module.css";
@@ -31,11 +32,11 @@ export function ChatApp() {
 
   const turn = useMutation({
     mutationFn: sendTurn,
-    onSuccess: (reply, input: TurnInput) =>
+    onSuccess: ({ reply, cards, trace }, input: TurnInput) =>
       historyStore.save([
         ...input.history,
         { role: "user", text: input.text },
-        { role: "agent", text: reply },
+        { role: "agent", text: reply, cards, trace },
       ]),
     onError: (_error, input) => setDraft((current) => current || input.text),
   });
@@ -85,7 +86,7 @@ export function ChatApp() {
         <Greeting showSuggestions={history.length === 0 && !turn.isPending} onPick={send} />
         {history.map((message, index) => (
           <MessageBubble key={index} role={message.role}>
-            {message.text}
+            {message.role === "agent" ? renderReply(message.text) : message.text}
           </MessageBubble>
         ))}
         {pendingText !== undefined && (

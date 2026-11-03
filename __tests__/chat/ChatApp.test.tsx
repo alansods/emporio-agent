@@ -197,7 +197,7 @@ describe("turns", () => {
     expect(within(feed()).queryByText(ptBR["typing.label"])).toBeNull();
     expect(storedHistory()).toEqual([
       { role: "user", text: "Oi" },
-      { role: "agent", text: "Olá!" },
+      { role: "agent", text: "Olá!", cards: [] },
     ]);
   });
 

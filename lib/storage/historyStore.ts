@@ -1,13 +1,20 @@
 import { z } from "zod";
 
-import { messageSchema, type ChatMessage } from "@/lib/chat/schema";
+import { cardSchema, messageSchema, traceSchema } from "@/lib/chat/schema";
 
+/** Same key as before cards existed: both new fields are optional, so old entries still load. */
 const STORAGE_KEY = "emporio.history.v1";
-const historySchema = z.array(messageSchema);
-const EMPTY: ChatMessage[] = [];
+const storedMessageSchema = messageSchema.extend({
+  cards: z.array(cardSchema).optional(),
+  trace: traceSchema.optional(),
+});
+export type StoredMessage = z.infer<typeof storedMessageSchema>;
+
+const historySchema = z.array(storedMessageSchema);
+const EMPTY: StoredMessage[] = [];
 
 const listeners = new Set<() => void>();
-let cache: { raw: string | null; value: ChatMessage[] } = { raw: null, value: EMPTY };
+let cache: { raw: string | null; value: StoredMessage[] } = { raw: null, value: EMPTY };
 
 function readRaw(): string | null {
   try {
@@ -17,7 +24,7 @@ function readRaw(): string | null {
   }
 }
 
-function parse(raw: string | null): ChatMessage[] {
+function parse(raw: string | null): StoredMessage[] {
   if (raw === null) return EMPTY;
   try {
     const parsed = historySchema.safeParse(JSON.parse(raw));
@@ -28,13 +35,13 @@ function parse(raw: string | null): ChatMessage[] {
 }
 
 /** Cached by the raw string so React gets a stable reference between renders. */
-function getSnapshot(): ChatMessage[] {
+function getSnapshot(): StoredMessage[] {
   const raw = readRaw();
   if (raw !== cache.raw) cache = { raw, value: parse(raw) };
   return cache.value;
 }
 
-function getServerSnapshot(): ChatMessage[] {
+function getServerSnapshot(): StoredMessage[] {
   return EMPTY;
 }
 
@@ -64,7 +71,7 @@ function write(update: () => void): void {
   notify();
 }
 
-function save(messages: ChatMessage[]): void {
+function save(messages: StoredMessage[]): void {
   write(() => window.localStorage.setItem(STORAGE_KEY, JSON.stringify(messages)));
 }
 

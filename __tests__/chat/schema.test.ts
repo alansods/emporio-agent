@@ -19,8 +19,26 @@ describe("chatResponseSchema", () => {
   });
 
   it("ignores extra fields", () => {
-    const result = chatResponseSchema.safeParse({ reply: "Oi", cards: [] });
+    const result = chatResponseSchema.safeParse({ reply: "Oi", cards: [], extra: 1 });
 
-    expect(result.success && result.data).toEqual({ reply: "Oi" });
+    expect(result.success && result.data).toEqual({ reply: "Oi", cards: [] });
+  });
+
+  it("rejects a malformed card", () => {
+    const body = { reply: "Oi", cards: [{ type: "product" }] };
+
+    expect(chatResponseSchema.safeParse(body).success).toBe(false);
+  });
+
+  it("rejects a malformed trace", () => {
+    const body = { reply: "Oi", cards: [], trace: { steps: "none" } };
+
+    expect(chatResponseSchema.safeParse(body).success).toBe(false);
+  });
+
+  it("reads a reply-only body as no cards and no trace", () => {
+    const result = chatResponseSchema.safeParse({ reply: "Oi" });
+
+    expect(result.success && result.data).toEqual({ reply: "Oi", cards: [] });
   });
 });

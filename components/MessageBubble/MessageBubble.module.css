@@ -40,8 +40,21 @@
   border-top-left-radius: var(--space-1);
 }
 
-.agent > p {
+.agent {
+  white-space: normal;
+}
+
+.agent > p,
+.agent > ul {
   margin: 0;
+}
+
+.agent > * + * {
+  margin-top: var(--space-2);
+}
+
+.agent > ul {
+  padding-left: var(--space-4);
 }
 
 .suggestions {
