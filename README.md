@@ -51,6 +51,22 @@ ruff check . && ruff format --check . && pytest
 
 CI runs the same checks on every push.
 
+### Real-model behavior check and examples
+
+CI always uses a scripted fake model. To check the real model, run by hand (venv active, `GEMINI_API_KEY` in the
+environment or in `.env`):
+
+```bash
+python scripts/record_examples.py
+```
+
+It sends 8 single-turn cases and the 5 example conversations through the real `/api/chat` app in-process (no server,
+rate limit off) and checks each turn's tool calls and key arguments from the response `trace`, never the wording. It
+prints `PASS` or `FAIL` per turn and writes each conversation whose turns all pass to [`examples/`](examples/).
+Exit status: 0 all passed, 1 a failure, 2 key missing. One run makes about 40 model calls on the free tier and takes
+about 3 minutes, because it pauses 8 s per turn to stay under 15 requests per minute. The model is not deterministic:
+rerun once on a `503`.
+
 ## Web app
 
 The chat is one client component tree (`components/ChatApp`) over a stateless API.
@@ -132,8 +148,10 @@ curl -H 'content-type: application/json' \
   until "New conversation" is used.
 - Cards list every product a search returned, including ones the reply does not mention. Markdown beyond the
   subset (headings, numbered lists, links) appears as typed.
-- Card values come from the tools, but the reply text is still the model's prose; it can misquote a value the card
-  shows correctly (seen once: R$ 599,90 written as "R$ 599,00").
+- Card values come from the tools, but the reply text is still the model's prose. The prompt asks it to copy tool
+  values exactly; after that change the recorded run quoted every price as returned (R$ 599,90 was once written as
+  "R$ 599,00"), but this is not guaranteed, so the card stays the source of truth. Dates are reformatted (24/02/2026
+  for 2026-02-24).
 - Reading the locale cookie in the root layout makes the home page dynamically rendered instead of static.
 
 ## License

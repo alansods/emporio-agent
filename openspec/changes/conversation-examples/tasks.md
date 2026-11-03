@@ -25,7 +25,7 @@
 
 ## 4. Docs (`docs: document the behavior check and examples`)
 
-- [ ] 4.1 README: how to run the script (key, cost, exit codes), link to `examples/`, reword the misquote known
+- [x] 4.1 README: how to run the script (key, cost, exit codes), link to `examples/`, reword the misquote known
   limitation with the run result; verify the documented command runs as written
 
 ## Workflow follow-up
