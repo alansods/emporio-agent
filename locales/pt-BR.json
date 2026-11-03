@@ -1,0 +1,21 @@
+{
+  "header.language": "Idioma",
+  "header.newConversation": "Nova conversa",
+  "feed.label": "Conversa",
+  "greeting.text": "Oi! Eu sou o assistente da Empório da Música. Posso te ajudar com preços, estoque, promoções, pedidos e nossas políticas de troca, frete e pagamento. Por onde começamos?",
+  "greeting.suggestionsTitle": "Experimente perguntar",
+  "greeting.suggestion1": "Quais violões disponíveis custando até R$ 1000?",
+  "greeting.suggestion2": "Quanto custa o violão Takamine GD20?",
+  "greeting.suggestion3": "Tem algum violão em promoção?",
+  "greeting.suggestion4": "Como funciona a devolução?",
+  "typing.label": "O assistente está digitando",
+  "composer.label": "Digite sua mensagem",
+  "composer.placeholder": "Pergunte sobre preços, pedidos, trocas…",
+  "composer.send": "Enviar",
+  "error.invalidRequest": "Não foi possível enviar esta mensagem. Tente uma mensagem mais curta ou comece uma nova conversa.",
+  "error.rateLimited_one": "Muitas mensagens em pouco tempo. Tente de novo em {count} segundo.",
+  "error.rateLimited_other": "Muitas mensagens em pouco tempo. Tente de novo em {count} segundos.",
+  "error.rateLimitedNoDelay": "Muitas mensagens em pouco tempo. Tente de novo daqui a pouco.",
+  "error.modelUnavailable": "O assistente está indisponível agora. Tente de novo em instantes.",
+  "error.generic": "Algo deu errado. Tente de novo."
+}

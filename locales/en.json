@@ -1,0 +1,21 @@
+{
+  "header.language": "Language",
+  "header.newConversation": "New conversation",
+  "feed.label": "Conversation",
+  "greeting.text": "Hi! I'm the Empório da Música assistant. I can help with prices, stock, promotions, orders and our return, shipping and payment policies. Where should we start?",
+  "greeting.suggestionsTitle": "Try asking",
+  "greeting.suggestion1": "Which acoustic guitars do you have for up to R$ 1,000?",
+  "greeting.suggestion2": "How much is the Takamine GD20 acoustic guitar?",
+  "greeting.suggestion3": "Any acoustic guitars on sale?",
+  "greeting.suggestion4": "How do returns work?",
+  "typing.label": "The assistant is typing",
+  "composer.label": "Type your message",
+  "composer.placeholder": "Ask about prices, orders, returns…",
+  "composer.send": "Send",
+  "error.invalidRequest": "This message could not be sent. Try a shorter message or start a new conversation.",
+  "error.rateLimited_one": "Too many messages in a short time. Try again in {count} second.",
+  "error.rateLimited_other": "Too many messages in a short time. Try again in {count} seconds.",
+  "error.rateLimitedNoDelay": "Too many messages in a short time. Try again shortly.",
+  "error.modelUnavailable": "The assistant is unavailable right now. Please try again in a moment.",
+  "error.generic": "Something went wrong. Please try again."
+}

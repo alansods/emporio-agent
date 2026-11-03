@@ -1,5 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Sora } from "next/font/google";
+import { cookies } from "next/headers";
+
+import { Providers } from "@/components/Providers/Providers";
+import { DEFAULT_LOCALE, LOCALE_COOKIE, parseLocale } from "@/lib/i18n/locale";
 
 import "@/styles/tokens.css";
 import "@/styles/globals.css";
@@ -23,10 +27,15 @@ export const viewport: Viewport = {
   themeColor: "#070c1a",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const cookieStore = await cookies();
+  const locale = parseLocale(cookieStore.get(LOCALE_COOKIE)?.value) ?? DEFAULT_LOCALE;
+
   return (
-    <html lang="en" className={`${inter.variable} ${sora.variable}`}>
-      <body>{children}</body>
+    <html lang={locale} className={`${inter.variable} ${sora.variable}`}>
+      <body>
+        <Providers initialLocale={locale}>{children}</Providers>
+      </body>
     </html>
   );
 }

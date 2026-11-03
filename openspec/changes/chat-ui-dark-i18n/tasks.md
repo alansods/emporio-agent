@@ -18,7 +18,7 @@
 
 ## 2. i18n context, dictionaries and language toggle (commit: `feat(web): add i18n context and language toggle`)
 
-- [ ] 2.1 Write failing tests: `__tests__/i18n/dictionaries.test.ts` ("Key parity", "Placeholder parity", "No empty
+- [x] 2.1 Write failing tests: `__tests__/i18n/dictionaries.test.ts` ("Key parity", "Placeholder parity", "No empty
   values"); `__tests__/i18n/locale.test.ts` (`parseLocale` and browser detection: "First visit with a Portuguese
   browser" `pt-PT` → `pt-BR`, `es-ES` → `en`, "Unknown saved value" `fr` ignored, "Remembered choice");
   `__tests__/i18n/plural.test.ts` ("One second", "Several seconds" in both locales);
@@ -26,7 +26,7 @@
   `localStorage` and `document.cookie`); `__tests__/i18n/ssr.test.tsx` (`renderToString` of the providers with
   `initialLocale="pt-BR"` contains the Portuguese greeting; the layout with a mocked `next/headers` cookie returns
   `<html lang="pt-BR">`, and `lang="en"` without the cookie). Verify they fail.
-- [ ] 2.2 Implement `locales/en.json`, `locales/pt-BR.json` (keys of design D2), `lib/i18n/` (types, `parseLocale`,
+- [x] 2.2 Implement `locales/en.json`, `locales/pt-BR.json` (keys of design D2), `lib/i18n/` (types, `parseLocale`,
   `detectLocale`, `I18nProvider`, `useI18n` with `t` and `tCount`), `lib/storage/localeStore.ts` (design D3),
   `components/LanguageToggle`, `components/Providers`, and the cookie read in `app/layout.tsx`. Verify all group 2
   tests, `pnpm typecheck` and `pnpm lint` pass.
