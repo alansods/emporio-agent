@@ -64,3 +64,16 @@ class FakeGeminiClient:
 
 def gemini_response(content: types.Content) -> types.GenerateContentResponse:
     return types.GenerateContentResponse(candidates=[types.Candidate(content=content)])
+
+
+@dataclass
+class FakeClock:
+    """A monotonic clock that only moves when the test advances it."""
+
+    now: float = 1000.0
+
+    def __call__(self) -> float:
+        return self.now
+
+    def advance(self, seconds: float) -> None:
+        self.now += seconds

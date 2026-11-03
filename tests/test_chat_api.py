@@ -3,10 +3,12 @@ from collections.abc import Iterator
 import pytest
 from fastapi.testclient import TestClient
 
-from api.index import app, chat_model
+from api.index import app, chat_model, chat_rate_limiter
 from emporio_agent import agent
+from emporio_agent.config import CHAT_RATE_LIMIT, CHAT_RATE_WINDOW_SECONDS
 from emporio_agent.prompt import load_policies
-from tests.fakes import ScriptedModel, call_response, text_response
+from emporio_agent.rate_limit import RateLimiter
+from tests.fakes import FakeClock, ScriptedModel, call_response, text_response
 
 FAKE_KEY = "AIza-fake-secret-key"
 INVALID_REQUEST = {"error": "invalid_request"}
@@ -29,8 +31,15 @@ def use_model(model: ScriptedModel) -> ScriptedModel:
     return model
 
 
+@pytest.fixture
+def clock() -> FakeClock:
+    return FakeClock()
+
+
 @pytest.fixture(autouse=True)
-def clear_overrides() -> Iterator[None]:
+def fresh_rate_limiter(clock: FakeClock) -> Iterator[None]:
+    limiter = RateLimiter(CHAT_RATE_LIMIT, CHAT_RATE_WINDOW_SECONDS, clock=clock)
+    app.dependency_overrides[chat_rate_limiter] = lambda: limiter
     yield
     app.dependency_overrides.clear()
 
@@ -189,3 +198,48 @@ def test_unexpected_error_is_opaque(monkeypatch):
     assert response.json() == {"error": "internal_error"}
     assert "secret" not in response.text
     assert "Traceback" not in response.text
+
+
+def send_chats(client: TestClient, count: int, ip: str = "1.1.1.1") -> list[int]:
+    headers = {"X-Forwarded-For": f"{ip}, 10.0.0.1"}
+    body = chat_body(user("Oi"))
+    return [client.post("/api/chat", json=body, headers=headers).status_code for _ in range(count)]
+
+
+def test_eleventh_request_in_a_minute_is_rate_limited(client):
+    model = use_model(ScriptedModel([text_response("Olá!")] * CHAT_RATE_LIMIT))
+
+    statuses = send_chats(client, CHAT_RATE_LIMIT)
+    response = client.post(
+        "/api/chat", json=chat_body(user("Oi")), headers={"X-Forwarded-For": "1.1.1.1"}
+    )
+
+    assert statuses == [200] * CHAT_RATE_LIMIT
+    assert response.status_code == 429
+    assert response.json() == {"error": "rate_limited"}
+    assert response.headers["Retry-After"] == str(CHAT_RATE_WINDOW_SECONDS)
+    assert len(model.requests) == CHAT_RATE_LIMIT
+
+
+def test_other_client_ip_is_unaffected(client):
+    use_model(ScriptedModel([text_response("Olá!")] * (CHAT_RATE_LIMIT + 1)))
+    send_chats(client, CHAT_RATE_LIMIT + 1, ip="1.1.1.1")
+
+    assert send_chats(client, 1, ip="2.2.2.2") == [200]
+
+
+def test_rate_limit_window_resets(client, clock):
+    use_model(ScriptedModel([text_response("Olá!")] * (CHAT_RATE_LIMIT + 1)))
+    send_chats(client, CHAT_RATE_LIMIT + 1)
+    clock.advance(CHAT_RATE_WINDOW_SECONDS)
+
+    assert send_chats(client, 1) == [200]
+
+
+def test_health_is_never_rate_limited(client):
+    use_model(ScriptedModel([text_response("Olá!")] * CHAT_RATE_LIMIT))
+    send_chats(client, CHAT_RATE_LIMIT + 1, ip="testclient")
+
+    statuses = [client.get("/api/health").status_code for _ in range(CHAT_RATE_LIMIT * 2)]
+
+    assert statuses == [200] * (CHAT_RATE_LIMIT * 2)

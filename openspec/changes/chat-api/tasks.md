@@ -13,8 +13,8 @@
 
 ## 3. Per-IP rate limit (`feat(api): rate limit chat requests per ip`)
 
-- [ ] 3.1 Write `tests/test_rate_limit.py` (limiter unit tests with a fake clock: 10 allowed, 11th raises with `retry_after` rounded up, other key unaffected, reset after 60 s, expired entries dropped) and add the rate limit scenarios to `tests/test_chat_api.py` (11th request 429 with `Retry-After` and the model not called, other IP via `X-Forwarded-For` unaffected, window reset, health never limited); verify they fail
-- [ ] 3.2 Add `CHAT_RATE_LIMIT` and `CHAT_RATE_WINDOW_SECONDS` to `config.py`, implement `emporio_agent/rate_limit.py` and the `enforce_rate_limit` dependency and 429 handler (design D5); verify `pytest` passes
+- [x] 3.1 Write `tests/test_rate_limit.py` (limiter unit tests with a fake clock: 10 allowed, 11th raises with `retry_after` rounded up, other key unaffected, reset after 60 s, expired entries dropped) and add the rate limit scenarios to `tests/test_chat_api.py` (11th request 429 with `Retry-After` and the model not called, other IP via `X-Forwarded-For` unaffected, window reset, health never limited); verify they fail
+- [x] 3.2 Add `CHAT_RATE_LIMIT` and `CHAT_RATE_WINDOW_SECONDS` to `config.py`, implement `emporio_agent/rate_limit.py` and the `enforce_rate_limit` dependency and 429 handler (design D5); verify `pytest` passes
 
 ## 4. Model request timeout (`feat(agent): bound model requests with a timeout`)
 
