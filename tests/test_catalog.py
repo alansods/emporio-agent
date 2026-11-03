@@ -125,3 +125,49 @@ def test_only_available_hides_the_rest():
 
     assert result["total_found"] == 61
     assert all(product["availability"] == "available" for product in result["products"])
+
+
+def test_pick_cheapest_in_a_category():
+    result = search_products(category="Guitarras", pick="cheapest")
+
+    assert names(result) == ["Fender Telecaster Player Series"]
+    assert result["products"][0]["effective_price"] == 5400
+    assert result["total_found"] == 1
+
+
+def test_pick_most_expensive_in_a_category():
+    result = search_products(category="Guitarras", pick="most_expensive")
+
+    assert names(result) == ["Gibson Les Paul Standard '50s"]
+    assert result["products"][0]["effective_price"] == 18900
+
+
+def test_pick_returns_every_tied_product():
+    result = search_products(category=VIOLOES, min_price=1299, pick="cheapest")
+
+    assert set(names(result)) == {
+        "Yamaha FG800 Dreadnought Natural",
+        "Rozini RV-174 7 Cordas Nylon Natural",
+    }
+    assert result["total_found"] == 2
+
+
+def test_pick_applies_after_the_other_filters():
+    result = search_products(category=VIOLOES, min_price=749, only_available=True, pick="cheapest")
+
+    assert names(result) == ["Tagima Dallas Tuner Aço Natural"]
+    assert "Shelby SN-7C 7 Cordas Nylon Natural" not in names(result)
+
+
+def test_pick_without_matches():
+    result = search_products(name="takamine martin", pick="cheapest")
+
+    assert result["total_found"] == 0
+    assert result["products"] == []
+
+
+def test_unknown_pick_lists_valid_ones():
+    result = search_products(pick="best")
+
+    assert result["error"] == "invalid_pick"
+    assert result["valid_picks"] == ["cheapest", "most_expensive"]

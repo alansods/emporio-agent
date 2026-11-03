@@ -13,6 +13,9 @@ ACTIVE_STATUS = "active"
 STATUS_AVAILABILITY = {"discontinued": "discontinued", "coming_soon": "coming_soon"}
 AVAILABLE = "available"
 OUT_OF_STOCK = "out_of_stock"
+CHEAPEST = "cheapest"
+MOST_EXPENSIVE = "most_expensive"
+PICKS = (CHEAPEST, MOST_EXPENSIVE)
 
 
 @dataclass(frozen=True)
@@ -43,6 +46,15 @@ def _in_price_range(price: Decimal, min_price: float | None, max_price: float | 
     above_min = min_price is None or price >= Decimal(str(min_price))
     below_max = max_price is None or price <= Decimal(str(max_price))
     return above_min and below_max
+
+
+def _pick_extremes(items: list[PricedProduct], pick: str) -> list[PricedProduct]:
+    """Every item tied at the lowest or highest effective price."""
+    if not items:
+        return []
+    prices = [item.pricing.effective_price for item in items]
+    target = min(prices) if pick == CHEAPEST else max(prices)
+    return [item for item in items if item.pricing.effective_price == target]
 
 
 def _promotion_result(promotion: Promotion | None) -> dict[str, Any] | None:
@@ -82,8 +94,15 @@ def search_products(
     min_price: float | None = None,
     max_price: float | None = None,
     only_available: bool = False,
+    pick: str | None = None,
 ) -> dict[str, Any]:
-    """Filters combine with AND. Price filters and sorting use the effective (promotional) price."""
+    """Filters combine with AND. Price filters, pick and sorting use the effective price."""
+    if pick is not None and pick not in PICKS:
+        return {
+            "error": "invalid_pick",
+            "message": "Unknown pick.",
+            "valid_picks": list(PICKS),
+        }
     store = load_store()
     products = list(store.products.values())
 
@@ -110,6 +129,8 @@ def search_products(
         for item in priced
         if _in_price_range(item.pricing.effective_price, min_price, max_price)
     ]
+    if pick is not None:
+        in_range = _pick_extremes(in_range, pick)
     in_range.sort(key=lambda item: item.pricing.effective_price)
     return {
         "total_found": len(in_range),

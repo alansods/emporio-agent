@@ -2,12 +2,12 @@
 
 ## 1. Pick in the catalog tool (`feat(api): pick the cheapest or most expensive products`)
 
-- [ ] 1.1 Write failing tests in `tests/test_catalog.py` for the six `product-catalog` scenarios (cheapest and most
+- [x] 1.1 Write failing tests in `tests/test_catalog.py` for the six `product-catalog` scenarios (cheapest and most
   expensive guitar, tie at 1299, pick after filters at 749, no matches, unknown value); `pytest tests/test_catalog.py`
   fails only on them
-- [ ] 1.2 Write a failing test in `tests/test_tools.py` that the `search_products` declaration has `pick` with enum
+- [x] 1.2 Write a failing test in `tests/test_tools.py` that the `search_products` declaration has `pick` with enum
   `["cheapest", "most_expensive"]`
-- [ ] 1.3 Implement `pick` in `emporio_agent/catalog.py` (design D1, D2) and declare it in `emporio_agent/tools.py`;
+- [x] 1.3 Implement `pick` in `emporio_agent/catalog.py` (design D1, D2) and declare it in `emporio_agent/tools.py`;
   `pytest`, `ruff check .` and `ruff format --check .` pass
 
 ## 2. Prompt rule and behavior case (`feat(api): ask for pick on cheapest questions`)

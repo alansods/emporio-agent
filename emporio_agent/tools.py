@@ -6,7 +6,7 @@ from typing import Any
 
 from google.genai import types
 
-from emporio_agent.catalog import search_products
+from emporio_agent.catalog import PICKS, search_products
 from emporio_agent.data import load_store
 from emporio_agent.orders import get_order_status
 
@@ -37,6 +37,14 @@ def _search_products_declaration(category_names: list[str]) -> types.FunctionDec
                 "only_available": {
                     "type": "boolean",
                     "description": "Only products that can be bought now.",
+                },
+                "pick": {
+                    "type": "string",
+                    "enum": list(PICKS),
+                    "description": (
+                        "Return only the products at the lowest or highest effective price "
+                        "after the other filters, every one of them on a tie."
+                    ),
                 },
             },
         },

@@ -20,6 +20,12 @@ def test_category_enum_lists_catalog_categories():
     assert "required" not in schema
 
 
+def test_search_declares_pick_enum():
+    schema = declarations()["search_products"].parameters_json_schema
+
+    assert schema["properties"]["pick"]["enum"] == ["cheapest", "most_expensive"]
+
+
 def test_order_lookup_requires_both_arguments():
     schema = declarations()["get_order_status"].parameters_json_schema
 
