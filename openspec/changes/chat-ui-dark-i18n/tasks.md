@@ -54,16 +54,18 @@
 
 ## 4. Docs (commit: `docs: document the chat ui and i18n`)
 
-- [ ] 4.1 README: how the web UI talks to the API (history in `localStorage`, last 20 messages sent, errors shown),
+- [x] 4.1 README: how the web UI talks to the API (history in `localStorage`, last 20 messages sent, errors shown),
   the own i18n approach and when to switch to next-intl, and limitations (history trimmed to 20 messages, personal
   data kept in the browser until "new conversation", replies shown as plain text). Update `openspec/project.md`
   only if a decision here differs from it. Verify `pnpm format:check` and `ruff format --check .` pass.
 
 ## 5. Production acceptance (no commit; fixes get their own `fix(web): ...` commit with a test)
 
-- [ ] 5.1 After groups 1 to 4 are pushed and the production deployment is ready, on
+- [x] 5.1 After groups 1 to 4 are pushed and the production deployment is ready, on
   https://emporio-agent-three.vercel.app in `pt-BR` ask "Quanto custa o violão Takamine GD20?" and confirm the reply
   shows R$ 2.199,00, PIX R$ 2.089,05 and 12x R$ 183,25 ("Takamine GD20 in production").
+  Result 2026-11-02 after 19e548b (group 4 not yet pushed): reply quoted all three values in about 5 s;
+  replies may show raw Markdown `**` (known limitation, design Risks).
 - [ ] 5.2 On production: switch to `en` and confirm every UI string changes; reload and confirm the conversation and
   the language are kept; send 11 messages within a minute (or until the per-instance limit triggers) and confirm the
   localized 429 message with the seconds. Record the results in this file.
