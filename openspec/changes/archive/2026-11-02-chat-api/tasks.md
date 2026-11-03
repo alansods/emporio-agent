@@ -23,8 +23,8 @@
 
 ## 5. Integration check
 
-- [ ] 5.1 Run the API with the dev command and the web app with `pnpm dev`; verify `curl -X POST localhost:3000/api/chat` with a valid body returns 503 `model_unavailable` with the placeholder key (or 200 with a real key), a 21-message body returns 422, and the 11th request in a minute returns 429
-- [ ] 5.2 Verify CI is green on push and `git grep -n "GEMINI_API_KEY" api/` returns nothing (the key is only read inside the package)
+- [x] 5.1 Run the API with the dev command and the web app with `pnpm dev`; verify `curl -X POST localhost:3000/api/chat` with a valid body returns 503 `model_unavailable` with the placeholder key (or 200 with a real key), a 21-message body returns 422, and the 11th request in a minute returns 429
+- [x] 5.2 Verify CI is green on push and `git grep -n "GEMINI_API_KEY" api/` returns nothing (the key is only read inside the package)
 
 ## Workflow follow-up
 
