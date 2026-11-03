@@ -73,4 +73,6 @@ failed, 2 if the key is missing. A free-tier `503 model_unavailable` counts as a
   arguments; the run is repeated before recording and the result is noted in tasks.
 - [Prompt rules reduce but do not remove misquotes] → cards stay the source of truth; the README limitation stays,
   reworded with what the run showed.
-- [Free-tier quota or 503 during a run] → ~20 calls per run, well under daily limits; rerun on failure.
+- [Free-tier quota or 503 during a run] → ~40 model calls per run, well under daily limits; the free tier also
+  caps 15 requests per minute, so the script pauses 8 s before each turn (a run takes about 3 minutes); rerun on
+  failure.

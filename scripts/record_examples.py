@@ -10,6 +10,7 @@ passing conversation to examples/<slug>.md. Exit status: 0 all passed, 1 a failu
 import json
 import os
 import sys
+import time
 import unicodedata
 from dataclasses import dataclass, field
 from datetime import date
@@ -31,6 +32,8 @@ from emporio_agent.rate_limit import RateLimiter  # noqa: E402
 ENV_FILE = ROOT / ".env"
 EXAMPLES_DIR = ROOT / "examples"
 RUN_RATE_LIMIT = 1000
+# Free tier allows 15 model requests per minute and a turn makes about two.
+TURN_PAUSE_SECONDS = 8
 EXIT_OK, EXIT_FAILED, EXIT_NO_KEY = 0, 1, 2
 
 
@@ -181,9 +184,10 @@ def make_client() -> TestClient:
 
 
 def send_turn(
-    client: TestClient, history: list[dict[str, str]], turn: Turn
+    client: TestClient, history: list[dict[str, str]], turn: Turn, pause_seconds: float
 ) -> tuple[RecordedTurn | None, list[str]]:
     messages = [*history, {"role": "user", "text": turn.text}]
+    time.sleep(pause_seconds)
     response = client.post("/api/chat", json={"messages": messages, "locale": turn.locale})
     body = response.json()
     if response.status_code != 200:
@@ -207,7 +211,7 @@ def run_conversation(client: TestClient, conversation: Conversation) -> list[Rec
     history: list[dict[str, str]] = []
     recorded_turns: list[RecordedTurn] = []
     for index, turn in enumerate(conversation.turns, start=1):
-        recorded, problems = send_turn(client, history, turn)
+        recorded, problems = send_turn(client, history, turn, TURN_PAUSE_SECONDS)
         if not report(f"{conversation.slug} turn {index}", recorded, problems) or not recorded:
             return None
         recorded_turns.append(recorded)
@@ -223,7 +227,7 @@ def main(env_file: Path = ENV_FILE, examples_dir: Path = EXAMPLES_DIR) -> int:
     client = make_client()
     passed = True
     for case in CASES:
-        recorded, problems = send_turn(client, [], case.turn)
+        recorded, problems = send_turn(client, [], case.turn, TURN_PAUSE_SECONDS)
         passed = report(case.name, recorded, problems) and passed
     examples_dir.mkdir(exist_ok=True)
     for conversation in CONVERSATIONS:
@@ -332,10 +336,10 @@ CONVERSATIONS = (
         "English locale: Portuguese data and policy translated on the fly.",
         (
             Turn(
-                "Hi! Do you have electric guitars under R$ 2000?",
+                "Hi! Do you have electric guitars under R$ 7000?",
                 (
                     ExpectedCall(
-                        "search_products", {"category": "Guitarras", "max_price": AtMost(2000)}
+                        "search_products", {"category": "Guitarras", "max_price": AtMost(7000)}
                     ),
                 ),
                 locale="en",
