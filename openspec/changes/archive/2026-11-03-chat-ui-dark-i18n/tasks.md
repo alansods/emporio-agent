@@ -46,11 +46,18 @@
   `TypingIndicator`, `ErrorAlert`, `Composer`, `NewConversationButton`, the `actions` slot in `Header`, the new props
   of `ChatShell`, and `app/page.tsx`, with CSS Modules per design D7 and D8. Stub `Element.prototype.scrollIntoView`
   in `vitest.setup.ts`. Verify `pnpm test`, `pnpm typecheck`, `pnpm lint`, `pnpm format:check` and `pnpm build` pass.
-- [ ] 3.3 Manual check with `pnpm dev` plus `uvicorn` (real key): keyboard only (Tab through every control, Enter
+- [x] 3.3 Manual check with `pnpm dev` plus `uvicorn` (real key): keyboard only (Tab through every control, Enter
   sends, Shift+Enter breaks the line, focus ring visible), 360 px viewport without horizontal scroll (also with a
   2000-character message), reduced motion in the browser's rendering settings stops the typing dots, reload keeps
   the conversation, a cookie set to `pt-BR` renders Portuguese with no flash. Fix any finding inside this group
   before committing.
+  Result 2026-11-03 (local, real key): Tab order EN, PT-BR, new conversation, conversation log, composer, send, each
+  with a 2px focus ring; Shift+Enter kept a line break and Enter sent it. In a 360 px frame `scrollWidth` equals
+  `clientWidth` on first load and after a 2000-character unbroken message, which wraps inside the bubble. The global
+  `prefers-reduced-motion: reduce` rule in `globals.css` overrides the dots' infinite animation (checked in the
+  loaded stylesheet; the setting itself was not toggled in the browser). Reload kept the conversation; the server
+  rendered `<html lang="pt-BR">` with Portuguese text for `locale=pt-BR` and `lang="en"` for `locale=en`, so no
+  flash. No findings.
 
 ## 4. Docs (commit: `docs: document the chat ui and i18n`)
 
@@ -66,9 +73,15 @@
   shows R$ 2.199,00, PIX R$ 2.089,05 and 12x R$ 183,25 ("Takamine GD20 in production").
   Result 2026-11-02 after 19e548b (group 4 not yet pushed): reply quoted all three values in about 5 s;
   replies may show raw Markdown `**` (known limitation, design Risks).
-- [ ] 5.2 On production: switch to `en` and confirm every UI string changes; reload and confirm the conversation and
+- [x] 5.2 On production: switch to `en` and confirm every UI string changes; reload and confirm the conversation and
   the language are kept; send 11 messages within a minute (or until the per-instance limit triggers) and confirm the
   localized 429 message with the seconds. Record the results in this file.
+  Result 2026-11-03: the GD20 question answered R$ 2.199,00 / PIX R$ 2.089,05 / 12x R$ 183,25. Switching to EN set
+  `lang="en"` and left no `pt-BR` dictionary value in the page text, `aria-label`s or placeholder (past replies kept
+  as written). Reload kept the 16 messages and EN. The limiter counts requests before body validation, so 9 POSTs
+  returned 422 and then 429 with `Retry-After: 21`; the next send showed "Too many messages in a short time. Try
+  again in 20 seconds." with the text kept in the composer, and switching to PT-BR translated it with the seconds.
+  No findings.
 
 ## Workflow follow-up
 
